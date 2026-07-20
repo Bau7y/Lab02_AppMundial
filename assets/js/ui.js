@@ -1,5 +1,5 @@
 /* ============================================================
-   ui.js — Lab02 TramiMuni
+   ui.js — Mundial 2026
    Capa de DOM compartido entre todas las páginas.
    Escucha eventos de api.js y reacciona visualmente.
    No hace fetch, no conoce la red — solo manipula el DOM.
@@ -14,12 +14,12 @@
   la función que lo usa verifica antes de actuar.
 */
 
-const modalSesion     = document.getElementById('modal-sesion')
-const overlayModal    = document.getElementById('modal-overlay')
-const btnReautenticar = document.getElementById('btn-reautenticar')
-const bannerCache     = document.getElementById('banner-cache')
-const bannerCountdown = document.getElementById('banner-countdown')
-const textoCountdown  = document.getElementById('texto-countdown')
+const modalSesion     = document.getElementById('modal_sesion')
+const overlayModal    = document.getElementById('modal_overlay')
+const btnReautenticar = document.getElementById('btn_reautenticar')
+const bannerCache     = document.getElementById('banner_cache')
+const bannerCountdown = document.getElementById('banner_countdown')
+const textoCountdown  = document.getElementById('texto_countdown')
 
 /* ── 2. Estado interno ──────────────────────────────────── */
 
@@ -197,7 +197,7 @@ function mostrarSkeletons(contenedor, cantidad = 4, tipo = 'card') {
 
   for (let i = 0; i < cantidad; i++) {
     const skeleton = document.createElement('div')
-    skeleton.classList.add('skeleton', `skeleton--${tipo}`)
+    skeleton.classList.add('skeleton_base', `skeleton_${tipo}`)
     skeleton.setAttribute('aria-hidden', 'true')
     contenedor.appendChild(skeleton)
   }
@@ -206,7 +206,7 @@ function mostrarSkeletons(contenedor, cantidad = 4, tipo = 'card') {
 function ocultarSkeletons(contenedor) {
   if (!contenedor) return
 
-  contenedor.querySelectorAll('.skeleton').forEach(el => el.remove())
+  contenedor.querySelectorAll('.skeleton_base').forEach(el => el.remove())
 }
 
 /* ── 8. Mensajes de error en pantalla ───────────────────── */
@@ -225,11 +225,11 @@ function mostrarError(contenedor, mensaje, endpoint = '') {
   if (!contenedor) return
 
   contenedor.innerHTML = `
-    <div class="estado-error" role="alert" aria-live="assertive">
-      <span class="estado-error__icono" aria-hidden="true">!</span>
-      <p class="estado-error__mensaje">${mensaje}</p>
+    <div class="estado_error" role="alert" aria-live="assertive">
+      <span class="estado_error_icono" aria-hidden="true">⚠️</span>
+      <p class="estado_error_mensaje">${mensaje}</p>
       <button
-        class="btn btn-outline estado-error__btn"
+        class="btn btn_outline estado_error_btn"
         data-endpoint="${endpoint}"
         aria-label="Reintentar la carga de datos"
       >
@@ -243,7 +243,7 @@ function mostrarError(contenedor, mensaje, endpoint = '') {
     que falló. La página escucha 'ui:reintentar' y vuelve
     a llamar a api.js con ese endpoint.
   */
-  const btnReintentar = contenedor.querySelector('.estado-error__btn')
+  const btnReintentar = contenedor.querySelector('.estado_error_btn')
 
   if (btnReintentar) {
     btnReintentar.addEventListener('click', () => {
@@ -267,9 +267,9 @@ function mostrarVacio(contenedor, mensaje = 'No hay datos disponibles.') {
   if (!contenedor) return
 
   contenedor.innerHTML = `
-    <div class="estado-vacio" role="status">
-      <span class="estado-vacio__icono" aria-hidden="true">!</span>
-      <p class="estado-vacio__mensaje">${mensaje}</p>
+    <div class="estado_vacio" role="status">
+      <span class="estado_vacio_icono" aria-hidden="true">📭</span>
+      <p class="estado_vacio_mensaje">${mensaje}</p>
     </div>
   `
 }
