@@ -1,5 +1,5 @@
 /* ============================================================
-   api.js — TramiMuni Lab02
+   api.js — Mundial 2026
    Capa de red: toda llamada HTTP del proyecto pasa por aquí.
    - async/await exclusivo, sin .then() ni .catch()
    - Backoff exponencial para 429 y 500
@@ -46,7 +46,7 @@ function dispararEvento(nombre, detalle = {}) {
 
 /*
   Cada endpoint tiene su propia clave en localStorage.
-  La clave se construye como: wc26_/get/stadiums → wc26__get_stadiums
+  La clave se construye como: wc26_/get/stadiums → wc26_get_stadiums
   Se guarda el objeto completo de la respuesta JSON.
 */
 
