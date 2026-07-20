@@ -1,0 +1,270 @@
+/* ============================================================
+   matriz.css — Mundial 2026
+   Estilos exclusivos de matriz-enfrentamientos.html.
+   Objetivo técnico: cuadrícula interactiva 4x4 por grupo,
+   cruzando tres recursos distintos.
+   Mobile-first.
+   ============================================================ */
+
+/* ── 1. Selector de grupo ───────────────────────────────── */
+
+.selector_grupo_wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing_xs);
+  margin-bottom: var(--spacing_lg);
+}
+
+.selector_grupo_label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color_text_muted);
+}
+
+/* Tabs de grupos — Flexbox con scroll horizontal en móvil */
+.grupos_tabs {
+  display: flex;
+  gap: var(--spacing_xs);
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+
+.grupos_tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.grupo_tab {
+  flex-shrink: 0;
+  padding: 0.4rem 1rem;
+  border-radius: var(--radius_full);
+  border: 1.5px solid var(--color_border);
+  background: var(--color_bg_card);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color_text_muted);
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition), color var(--transition);
+  font-family: var(--font_body);
+  white-space: nowrap;
+}
+
+.grupo_tab:hover {
+  border-color: var(--color_primary);
+  color: var(--color_primary);
+}
+
+.grupo_tab.activo {
+  background: var(--color_primary);
+  border-color: var(--color_primary);
+  color: #fff;
+}
+
+/* ── 2. Contenedor de la matriz ─────────────────────────── */
+
+.matriz_wrap {
+  overflow-x: auto;
+  border-radius: var(--radius_md);
+  border: 1px solid var(--color_border);
+}
+
+/* ── 3. Tabla de la matriz 4x4 ──────────────────────────── */
+
+/*
+  La matriz es una tabla HTML semántica.
+  <table> es correcto aquí porque el contenido
+  es genuinamente tabular: filas y columnas representan
+  equipos y sus resultados cruzados.
+*/
+.matriz_tabla {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 420px;
+}
+
+/* ── 4. Encabezados de fila y columna ───────────────────── */
+
+.matriz_th_vacio {
+  width: 120px;
+  min-width: 120px;
+  background: var(--color_bg_secondary);
+  border-bottom: 1px solid var(--color_border);
+  border-right: 1px solid var(--color_border);
+}
+
+.matriz_th_columna {
+  text-align: center;
+  padding: var(--spacing_xs);
+  background: var(--color_bg_secondary);
+  border-bottom: 1px solid var(--color_border);
+  border-right: 1px solid var(--color_border);
+  min-width: 90px;
+}
+
+.matriz_th_nombre {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--color_text);
+  display: block;
+  line-height: 1.3;
+}
+
+.matriz_th_fila {
+  text-align: left;
+  padding: var(--spacing_xs) var(--spacing_sm);
+  background: var(--color_bg_secondary);
+  border-right: 1px solid var(--color_border);
+  border-bottom: 1px solid var(--color_border);
+  min-width: 120px;
+}
+
+/* ── 5. Celdas de la matriz ─────────────────────────────── */
+
+.matriz_td {
+  text-align: center;
+  padding: var(--spacing_xs);
+  border-right: 1px solid var(--color_border);
+  border-bottom: 1px solid var(--color_border);
+  min-width: 90px;
+  height: 56px;
+  vertical-align: middle;
+  transition: background var(--transition);
+}
+
+/*
+  La diagonal: equipo contra sí mismo.
+  Visualmente deshabilitada con un patrón de rayas.
+*/
+.matriz_td.diagonal {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--color_bg_secondary),
+    var(--color_bg_secondary) 4px,
+    var(--color_border) 4px,
+    var(--color_border) 8px
+  );
+  cursor: not-allowed;
+}
+
+/* Celda con partido jugado */
+.matriz_td.jugado {
+  background: var(--color_primary_bg);
+}
+
+.matriz_td.jugado:hover {
+  background: color-mix(in srgb, var(--color_primary) 15%, white);
+}
+
+/* Celda pendiente */
+.matriz_td.pendiente {
+  background: var(--color_bg_card);
+}
+
+.matriz_td.pendiente:hover {
+  background: var(--color_bg_secondary);
+}
+
+/* ── 6. Contenido de la celda ───────────────────────────── */
+
+.celda_resultado {
+  font-family: var(--font_display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color_primary);
+  line-height: 1;
+}
+
+.celda_pendiente {
+  font-size: 0.72rem;
+  color: var(--color_text_muted);
+  font-style: italic;
+}
+
+.celda_diagonal {
+  font-size: 1rem;
+  color: var(--color_border);
+}
+
+/* ── 7. Leyenda de la matriz ────────────────────────────── */
+
+.matriz_leyenda {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing_sm);
+  margin-top: var(--spacing_sm);
+  padding: var(--spacing_sm);
+  background: var(--color_bg_secondary);
+  border-radius: var(--radius_sm);
+}
+
+.leyenda_item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--color_text_muted);
+}
+
+.leyenda_muestra {
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius_sm);
+  border: 1px solid var(--color_border);
+  flex-shrink: 0;
+}
+
+.leyenda_muestra.jugado {
+  background: var(--color_primary_bg);
+}
+
+.leyenda_muestra.pendiente {
+  background: var(--color_bg_card);
+}
+
+.leyenda_muestra.diagonal {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--color_bg_secondary),
+    var(--color_bg_secondary) 4px,
+    var(--color_border) 4px,
+    var(--color_border) 8px
+  );
+}
+
+/* ── 8. Estado de carga por grupo ───────────────────────── */
+
+.matriz_cargando {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing_xl);
+  gap: var(--spacing_sm);
+  color: var(--color_text_muted);
+  font-size: 0.9rem;
+}
+
+/* ── 9. Breakpoints ─────────────────────────────────────── */
+
+/* Tablet: 768px */
+@media (min-width: 768px) {
+  .matriz_th_vacio,
+  .matriz_th_fila {
+    min-width: 140px;
+  }
+
+  .matriz_th_columna,
+  .matriz_td {
+    min-width: 110px;
+  }
+}
+
+/* Desktop: 1024px */
+@media (min-width: 1024px) {
+  .matriz_tabla {
+    min-width: unset;
+    width: 100%;
+  }
+}
