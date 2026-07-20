@@ -1,0 +1,327 @@
+/* ============================================================
+   tour-sedes.css — Mundial 2026
+   Estilos exclusivos de tour-sedes.html.
+   Objetivo técnico: scrollIntoView + estado activo de sede.
+   Mobile-first.
+   ============================================================ */
+
+/* ── 1. Layout principal ────────────────────────────────── */
+
+/*
+  Layout de dos columnas en desktop:
+  - Columna izquierda: lista de sedes (fija con sticky)
+  - Columna derecha: partidos de la sede seleccionada
+  En móvil se apila en columna única.
+*/
+.tour_layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing_lg);
+  align-items: start;
+}
+
+/* ── 2. Panel de sedes ──────────────────────────────────── */
+
+.sedes_panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing_xs);
+}
+
+.sedes_panel_titulo {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color_text_muted);
+  margin-bottom: var(--spacing_xs);
+}
+
+/* ── 3. Botón de sede ───────────────────────────────────── */
+
+/*
+  Cada sede es un botón que al hacer click:
+  1. Se marca como activo visualmente
+  2. Ejecuta scrollIntoView hacia la sección de partidos
+  Flexbox alinea el icono de bandera con el nombre y país.
+*/
+.sede_btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing_sm);
+  width: 100%;
+  padding: 0.875rem var(--spacing_sm);
+  background: var(--color_bg_card);
+  border: 1.5px solid var(--color_border);
+  border-radius: var(--radius_md);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--transition), background var(--transition), transform var(--transition);
+  font-family: var(--font_body);
+}
+
+.sede_btn:hover {
+  border-color: var(--color_primary);
+  background: var(--color_primary_bg);
+}
+
+/*
+  Estado activo: la sede seleccionada tiene borde y fondo
+  del color primario para feedback visual inmediato al click.
+  aria-pressed="true" se añade por JS para accesibilidad.
+*/
+.sede_btn.activa {
+  border-color: var(--color_primary);
+  background: var(--color_primary_bg);
+  box-shadow: 0 0 0 3px rgba(2, 185, 6, 0.15);
+}
+
+.sede_btn_icono {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.sede_btn_info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.sede_btn_nombre {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color_text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sede_btn_pais {
+  font-size: 0.78rem;
+  color: var(--color_text_muted);
+}
+
+.sede_btn_contador {
+  margin-left: auto;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color_primary);
+  background: var(--color_primary_bg);
+  border-radius: var(--radius_full);
+  padding: 0.2rem 0.55rem;
+  flex-shrink: 0;
+}
+
+/* ── 4. Panel de partidos ───────────────────────────────── */
+
+.partidos_panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing_sm);
+}
+
+/*
+  scroll-margin-top compensa el navbar fijo al usar
+  scrollIntoView. Sin esto, el título de la sección
+  quedaría parcialmente oculto detrás del navbar.
+*/
+.partidos_panel_titulo {
+  font-size: 1.2rem;
+  color: var(--color_text);
+  scroll-margin-top: calc(var(--navbar_h) + var(--spacing_sm));
+}
+
+.partidos_panel_subtitulo {
+  font-size: 0.875rem;
+  color: var(--color_text_muted);
+  margin-top: 0.25rem;
+}
+
+/* ── 5. Card de partido ─────────────────────────────────── */
+
+.partido_card {
+  background: var(--color_bg_card);
+  border: 1px solid var(--color_border);
+  border-radius: var(--radius_md);
+  padding: var(--spacing_md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing_xs);
+  transition: box-shadow var(--transition);
+}
+
+.partido_card:hover {
+  box-shadow: var(--shadow_sm);
+}
+
+/* Fila de equipos: local vs visitante */
+.partido_equipos {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing_sm);
+}
+
+.partido_equipo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.partido_equipo_nombre {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color_text);
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.partido_vs {
+  font-family: var(--font_display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color_text_muted);
+  flex-shrink: 0;
+}
+
+.partido_resultado {
+  font-family: var(--font_display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color_primary);
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+
+/* Fila de metadatos: fecha, grupo, fase */
+.partido_meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-top: var(--spacing_xs);
+  border-top: 1px solid var(--color_border);
+}
+
+.partido_meta_item {
+  font-size: 0.75rem;
+  color: var(--color_text_muted);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* ── 6. Estado: sede sin partidos ───────────────────────── */
+
+/*
+  Si /get/games falla pero /get/stadiums funcionó,
+  los botones de sedes siguen clicables y este mensaje
+  se muestra en el panel de partidos sin bloquear la navegación.
+*/
+.partidos_error_local {
+  background: var(--color_warning_bg);
+  border: 1px solid var(--color_warning);
+  border-radius: var(--radius_md);
+  padding: var(--spacing_md);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing_xs);
+  align-items: center;
+}
+
+.partidos_error_local p {
+  font-size: 0.9rem;
+  color: var(--color_warning);
+  font-weight: 500;
+}
+
+/* ── 7. Estado inicial (sin sede seleccionada) ──────────── */
+
+.partidos_placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing_xl) var(--spacing_lg);
+  text-align: center;
+  border: 2px dashed var(--color_border);
+  border-radius: var(--radius_lg);
+  gap: var(--spacing_sm);
+}
+
+.partidos_placeholder_icono {
+  font-size: 3rem;
+  opacity: 0.4;
+}
+
+.partidos_placeholder p {
+  font-size: 0.9rem;
+  color: var(--color_text_muted);
+  max-width: 280px;
+}
+
+/* ── 8. Breakpoints ─────────────────────────────────────── */
+
+/* Tablet: 768px */
+@media (min-width: 768px) {
+  .sedes_panel {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing_xs);
+  }
+
+  /* El título ocupa las 2 columnas */
+  .sedes_panel_titulo {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Desktop: 1024px */
+@media (min-width: 1024px) {
+  /*
+    En desktop: lista de sedes a la izquierda (fija con sticky),
+    partidos a la derecha.
+    280px para el panel de sedes — ancho fijo que permite
+    leer los nombres sin truncarlos en la mayoría de casos.
+  */
+  .tour_layout {
+    grid-template-columns: 280px 1fr;
+  }
+
+  .sedes_panel {
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: calc(var(--navbar_h) + var(--spacing_sm));
+    max-height: calc(100vh - var(--navbar_h) - var(--spacing_xl));
+    overflow-y: auto;
+    padding-right: var(--spacing_xs);
+  }
+
+  /*
+    Scrollbar estilizada para el panel lateral en desktop.
+    Solo webkit — en otros navegadores usa el scrollbar nativo.
+  */
+  .sedes_panel::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .sedes_panel::-webkit-scrollbar-track {
+    background: var(--color_bg_secondary);
+    border-radius: 2px;
+  }
+
+  .sedes_panel::-webkit-scrollbar-thumb {
+    background: var(--color_border);
+    border-radius: 2px;
+  }
+}
