@@ -1,0 +1,459 @@
+/* ============================================================
+   styles.css — Mundial 2026
+   Sistema de diseño global: variables, reset, tipografía,
+   navbar, footer, botones, utilidades.
+   Se carga en TODAS las páginas. Mobile-first.
+   ============================================================ */
+
+/* ── 1. Fuentes ─────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@600;700&display=swap');
+
+/* ── 2. Variables CSS ───────────────────────────────────── */
+:root {
+  /* Colores principales */
+  --color_primary:      #02B906;
+  --color_primary_dark: #019504;
+  --color_primary_bg:   #E6FDE7;
+  --color_accent:       #FFDB00;
+  --color_accent_dark:  #CEB000;
+
+  /* Neutros */
+  --color_bg:           #FFFFFF;
+  --color_bg_secondary: #F5F5F5;
+  --color_bg_card:      #FFFFFF;
+  --color_text:         #0A0A0A;
+  --color_text_muted:   #5A5A5A;
+  --color_border:       #E0E0E0;
+
+  /* Estados de error y advertencia */
+  --color_error:        #DC2626;
+  --color_error_bg:     #FEF2F2;
+  --color_warning:      #D97706;
+  --color_warning_bg:   #FFFBEB;
+  --color_success:      #059669;
+  --color_success_bg:   #ECFDF5;
+
+  /* Sombras */
+  --shadow_sm:  0 1px 3px rgba(0,0,0,0.08);
+  --shadow_md:  0 4px 16px rgba(0,0,0,0.10);
+  --shadow_lg:  0 8px 32px rgba(0,0,0,0.12);
+
+  /* Tipografía */
+  --font_body:    'DM Sans', sans-serif;
+  --font_display: 'Space Grotesk', sans-serif;
+
+  /* Espaciado */
+  --spacing_xs: 0.5rem;
+  --spacing_sm: 1rem;
+  --spacing_md: 1.5rem;
+  --spacing_lg: 2.5rem;
+  --spacing_xl: 4rem;
+
+  /* Radios */
+  --radius_sm:   6px;
+  --radius_md:   12px;
+  --radius_lg:   20px;
+  --radius_full: 9999px;
+
+  /* Transiciones */
+  --transition: 0.2s ease;
+
+  /* Contenedor */
+  --container_max: 1200px;
+  --container_px:  1.25rem;
+
+  /* Navbar */
+  --navbar_h: 64px;
+}
+
+/* ── 3. Reset ───────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font_body);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--color_text);
+  background-color: var(--color_bg);
+  padding-top: var(--navbar_h);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul, ol { list-style: none; }
+
+button {
+  cursor: pointer;
+  font-family: var(--font_body);
+  border: none;
+  background: none;
+}
+
+[id] {
+  scroll-margin-top: calc(var(--navbar_h) + var(--spacing_sm));
+}
+
+/* ── 4. Tipografía ──────────────────────────────────────── */
+h1, h2, h3, h4 {
+  font-family: var(--font_display);
+  line-height: 1.2;
+  color: var(--color_text);
+}
+
+h1 { font-size: clamp(1.8rem, 4vw, 3rem); }
+h2 { font-size: clamp(1.4rem, 3vw, 2.2rem); }
+h3 { font-size: clamp(1.1rem, 2.5vw, 1.5rem); }
+h4 { font-size: clamp(0.95rem, 2vw, 1.1rem); }
+
+p {
+  color: var(--color_text_muted);
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  line-height: 1.75;
+}
+
+/* ── 5. Contenedor ──────────────────────────────────────── */
+.container {
+  width: 100%;
+  max-width: var(--container_max);
+  margin-inline: auto;
+  padding-inline: var(--container_px);
+}
+
+/* ── 6. Navbar ──────────────────────────────────────────── */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--navbar_h);
+  background-color: var(--color_bg);
+  border-bottom: 1px solid var(--color_border);
+  z-index: 1000;
+  transition: box-shadow var(--transition);
+}
+
+.navbar.scrolled {
+  box-shadow: var(--shadow_md);
+}
+
+.navbar_inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  gap: var(--spacing_sm);
+}
+
+/* Logo */
+.navbar_logo {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font_display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color_text);
+  flex-shrink: 0;
+  letter-spacing: -0.01em;
+}
+
+.navbar_logo span {
+  color: var(--color_primary);
+}
+
+/* Links desktop — Flexbox */
+.navbar_links {
+  display: none;
+  align-items: center;
+  gap: var(--spacing_md);
+}
+
+.navbar_links a {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color_text_muted);
+  padding: 0.25rem 0;
+  border-bottom: 2px solid transparent;
+  transition: color var(--transition), border-color var(--transition);
+  white-space: nowrap;
+}
+
+.navbar_links a:hover,
+.navbar_links a.active {
+  color: var(--color_primary);
+  border-bottom-color: var(--color_primary);
+}
+
+/* Botón hamburger */
+.btn_menu {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border-radius: var(--radius_sm);
+  border: 1px solid var(--color_border);
+  background: var(--color_bg_secondary);
+  flex-shrink: 0;
+}
+
+.btn_menu span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--color_text);
+  border-radius: 2px;
+  transition: transform var(--transition), opacity var(--transition);
+}
+
+.btn_menu.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.btn_menu.open span:nth-child(2) { opacity: 0; }
+.btn_menu.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Menú móvil */
+.navbar_mobile {
+  display: none;
+  flex-direction: column;
+  background: var(--color_bg);
+  border-top: 1px solid var(--color_border);
+  padding: var(--spacing_sm) var(--container_px);
+  gap: 0;
+  position: fixed;
+  top: var(--navbar_h);
+  left: 0;
+  right: 0;
+  z-index: 999;
+  box-shadow: var(--shadow_md);
+}
+
+.navbar_mobile.open {
+  display: flex;
+}
+
+.navbar_mobile a {
+  padding: 0.75rem 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color_text_muted);
+  border-bottom: 1px solid var(--color_border);
+  transition: color var(--transition);
+}
+
+.navbar_mobile a:last-child {
+  border-bottom: none;
+}
+
+.navbar_mobile a:hover,
+.navbar_mobile a.active {
+  color: var(--color_primary);
+}
+
+/* ── 7. Footer ──────────────────────────────────────────── */
+.footer {
+  background: var(--color_bg_secondary);
+  border-top: 1px solid var(--color_border);
+  padding: var(--spacing_lg) 0 var(--spacing_sm);
+  margin-top: var(--spacing_xl);
+}
+
+.footer_grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing_lg);
+  margin-bottom: var(--spacing_lg);
+}
+
+.footer_brand p {
+  margin-top: var(--spacing_xs);
+  font-size: 0.875rem;
+}
+
+.footer_col h4 {
+  font-family: var(--font_body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color_text);
+  margin-bottom: var(--spacing_sm);
+}
+
+.footer_col ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer_col ul a {
+  font-size: 0.875rem;
+  color: var(--color_text_muted);
+  transition: color var(--transition);
+}
+
+.footer_col ul a:hover {
+  color: var(--color_primary);
+}
+
+.footer_bottom {
+  padding-top: var(--spacing_sm);
+  border-top: 1px solid var(--color_border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  text-align: center;
+}
+
+.footer_bottom p {
+  font-size: 0.8rem;
+  color: var(--color_text_muted);
+}
+
+/* ── 8. Botones globales ────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.5rem;
+  border-radius: var(--radius_full);
+  font-size: 0.9rem;
+  font-weight: 500;
+  font-family: var(--font_body);
+  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+  cursor: pointer;
+  border: none;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow_md);
+}
+
+.btn_primary {
+  background: var(--color_primary);
+  color: #fff;
+}
+
+.btn_primary:hover {
+  background: var(--color_primary_dark);
+}
+
+.btn_outline {
+  background: transparent;
+  color: var(--color_primary);
+  border: 1.5px solid var(--color_primary);
+}
+
+.btn_outline:hover {
+  background: var(--color_primary_bg);
+}
+
+.btn_accent {
+  background: var(--color_accent);
+  color: #fff;
+}
+
+.btn_accent:hover {
+  background: var(--color_accent_dark);
+}
+
+/* ── 9. Secciones ───────────────────────────────────────── */
+.section {
+  padding: var(--spacing_xl) 0;
+}
+
+.section_header {
+  margin-bottom: var(--spacing_lg);
+}
+
+.section_header p {
+  max-width: 600px;
+  margin-top: var(--spacing_xs);
+}
+
+.section_badge {
+  display: inline-block;
+  padding: 0.25rem 0.875rem;
+  background: var(--color_primary_bg);
+  color: var(--color_primary_dark);
+  border-radius: var(--radius_full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--spacing_xs);
+}
+
+/* ── 10. Accesibilidad ──────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color_primary);
+  outline-offset: 3px;
+  border-radius: var(--radius_sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── 11. Breakpoints ────────────────────────────────────── */
+
+/* Tablet: 768px */
+@media (min-width: 768px) {
+  :root {
+    --container_px: 2rem;
+  }
+
+  .navbar_links {
+    display: flex;
+  }
+
+  .btn_menu {
+    display: none;
+  }
+
+  .footer_grid {
+    grid-template-columns: 1.5fr 1fr 1fr;
+  }
+
+  .footer_bottom {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
+}
+
+/* Desktop: 1024px */
+@media (min-width: 1024px) {
+  :root {
+    --container_px: 2.5rem;
+  }
+
+  .footer_grid {
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+}
