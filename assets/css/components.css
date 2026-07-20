@@ -1,0 +1,319 @@
+/* ============================================================
+   components.css — Mundial 2026
+   Estilos de piezas reutilizables generadas por ui.js:
+   modal de sesión, countdown, banner de caché, skeletons,
+   mensajes de error y estado vacío.
+   Se carga en TODAS las páginas junto con styles.css.
+   ============================================================ */
+
+/* ── 1. Overlay del modal ───────────────────────────────── */
+
+/*
+  El overlay cubre toda la pantalla detrás del modal.
+  position: fixed lo fija al viewport, no al documento.
+  z-index: 1100 — por encima del navbar (z-index: 1000).
+*/
+.modal_overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 1100;
+  backdrop-filter: blur(4px);
+}
+
+/* ── 2. Modal de sesión expirada (401) ──────────────────── */
+
+.modal_sesion {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1200;
+  background: var(--color_bg_card);
+  border: 1px solid var(--color_border);
+  border-radius: var(--radius_lg);
+  padding: var(--spacing_lg);
+  width: min(480px, 90vw);
+  box-shadow: var(--shadow_lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing_sm);
+}
+
+/*
+  min() elige el valor más pequeño entre 480px y 90vw.
+  En móvil (menos de 533px) el modal usa el 90% del ancho.
+  En desktop usa 480px fijos. Evita overflow horizontal
+  sin necesitar media queries.
+*/
+
+.modal_sesion_icono {
+  font-size: 2.5rem;
+  text-align: center;
+}
+
+.modal_sesion h2 {
+  font-size: 1.2rem;
+  text-align: center;
+  color: var(--color_text);
+}
+
+.modal_sesion p {
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.modal_sesion_acciones {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacing_xs);
+}
+
+/* ── 3. Banner de countdown (429) ───────────────────────── */
+
+/*
+  El banner se fija en la parte superior de la página,
+  debajo del navbar, para no interferir con el contenido.
+  calc() suma la altura del navbar al top para no taparlo.
+*/
+.banner_countdown {
+  position: fixed;
+  top: calc(var(--navbar_h) + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 900;
+  background: var(--color_warning_bg);
+  border: 1px solid var(--color_warning);
+  border-radius: var(--radius_full);
+  padding: 0.5rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: var(--shadow_md);
+  max-width: min(520px, 90vw);
+  width: max-content;
+}
+
+.banner_countdown_icono {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.texto_countdown {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color_warning);
+  white-space: nowrap;
+}
+
+/* ── 4. Banner de datos no actualizados (caché) ─────────── */
+
+.banner_cache {
+  background: var(--color_warning_bg);
+  border: 1px solid var(--color_warning);
+  border-radius: var(--radius_md);
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: var(--spacing_sm);
+}
+
+.banner_cache_icono {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.banner_cache p {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color_warning);
+  margin: 0;
+}
+
+/* ── 5. Skeletons de carga ──────────────────────────────── */
+
+/*
+  Los skeletons usan una animación de pulso para indicar
+  que hay contenido cargando. El gradiente animado simula
+  un brillo que se desplaza de izquierda a derecha.
+*/
+
+@keyframes skeleton_pulse {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton_base {
+  background: linear-gradient(
+    90deg,
+    var(--color_border) 25%,
+    var(--color_bg_secondary) 50%,
+    var(--color_border) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton_pulse 1.5s ease-in-out infinite;
+  border-radius: var(--radius_md);
+}
+
+/* Variante tipo card — para grids de sedes y partidos */
+.skeleton_card {
+  height: 180px;
+  width: 100%;
+}
+
+/* Variante tipo fila — para listas y agenda */
+.skeleton_fila {
+  height: 64px;
+  width: 100%;
+  border-radius: var(--radius_sm);
+}
+
+/* Variante tipo celda — para la matriz de enfrentamientos */
+.skeleton_celda {
+  height: 48px;
+  width: 100%;
+  border-radius: var(--radius_sm);
+}
+
+/* ── 6. Estado de error ─────────────────────────────────── */
+
+.estado_error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing_sm);
+  padding: var(--spacing_lg);
+  background: var(--color_error_bg);
+  border: 1px solid var(--color_error);
+  border-radius: var(--radius_md);
+  text-align: center;
+}
+
+.estado_error_icono {
+  font-size: 2rem;
+}
+
+.estado_error_mensaje {
+  font-size: 0.9rem;
+  color: var(--color_error);
+  font-weight: 500;
+}
+
+.estado_error_btn {
+  margin-top: var(--spacing_xs);
+  color: var(--color_error);
+  border-color: var(--color_error);
+}
+
+.estado_error_btn:hover {
+  background: var(--color_error_bg);
+}
+
+/* ── 7. Estado vacío ────────────────────────────────────── */
+
+.estado_vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing_sm);
+  padding: var(--spacing_lg);
+  text-align: center;
+}
+
+.estado_vacio_icono {
+  font-size: 2.5rem;
+  opacity: 0.5;
+}
+
+.estado_vacio_mensaje {
+  font-size: 0.9rem;
+  color: var(--color_text_muted);
+}
+
+/* ── 8. Cards genéricas ─────────────────────────────────── */
+
+/*
+  Estilo de card base reutilizable en varias vistas.
+  Cada página puede extenderla con clases adicionales.
+*/
+.card {
+  background: var(--color_bg_card);
+  border: 1px solid var(--color_border);
+  border-radius: var(--radius_md);
+  padding: var(--spacing_md);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow_md);
+}
+
+.card_titulo {
+  font-family: var(--font_display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color_text);
+  margin-bottom: 0.4rem;
+}
+
+.card_subtitulo {
+  font-size: 0.82rem;
+  color: var(--color_text_muted);
+}
+
+/* ── 9. Badge de estado ─────────────────────────────────── */
+
+/*
+  Badges de estado para partidos: jugado, pendiente, en vivo.
+*/
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius_full);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.badge_jugado {
+  background: var(--color_success_bg);
+  color: var(--color_success);
+}
+
+.badge_pendiente {
+  background: var(--color_bg_secondary);
+  color: var(--color_text_muted);
+}
+
+.badge_en_vivo {
+  background: var(--color_error_bg);
+  color: var(--color_error);
+  animation: badge_pulso 1.5s ease-in-out infinite;
+}
+
+@keyframes badge_pulso {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.6; }
+}
+
+/* ── 10. Indicador de carga global ──────────────────────── */
+
+/*
+  Spinner simple para estados de carga puntuales
+  dentro de botones o elementos pequeños.
+*/
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--color_border);
+  border-top-color: var(--color_primary);
+  border-radius: 50%;
+  animation: spinner_girar 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spinner_girar {
+  to { transform: rotate(360deg); }
+}
