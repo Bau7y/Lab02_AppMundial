@@ -124,7 +124,7 @@ function renderizarSedes(sedes) {
     const btn = document.createElement('button')
     btn.className = 'sede_btn'
     btn.setAttribute('aria-pressed', 'false')
-    btn.setAttribute('aria-label', `Ver partidos de ${sede.name}, ${sede.city}`)
+    btn.setAttribute('aria-label', `Ver partidos de ${sede.name_en}, ${sede.city_en}`)
     btn.dataset.id = sede.id
 
     /*
@@ -137,8 +137,8 @@ function renderizarSedes(sedes) {
     btn.innerHTML = `
       <span class="sede_btn_icono" aria-hidden="true">🏟️</span>
       <span class="sede_btn_info">
-        <span class="sede_btn_nombre">${sede.name}</span>
-        <span class="sede_btn_pais">${sede.city}</span>
+        <span class="sede_btn_nombre">${sede.name_en}</span>
+        <span class="sede_btn_pais">${sede.city_en}</span>
       </span>
       ${cantidad > 0
         ? `<span class="sede_btn_contador" aria-label="${cantidad} partidos">${cantidad}</span>`
@@ -209,7 +209,7 @@ function renderizarPartidosDeSede(sede) {
   if (!contenedor_partidos) return
 
   if (titulo_sede_activa) {
-    titulo_sede_activa.textContent = sede.name
+    titulo_sede_activa.textContent = sede.name_en
   }
 
   /*
@@ -233,7 +233,7 @@ function renderizarPartidosDeSede(sede) {
   if (partidos_sede.length === 0) {
     mostrarVacio(
       contenedor_partidos,
-      `No hay partidos registrados para ${sede.name}.`
+      `No hay partidos registrados para ${sede.name_en}.`
     )
     return
   }
