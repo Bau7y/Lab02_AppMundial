@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Timeline Infinito — Mundial 2026. Los 104 partidos en orden cronológico con carga progresiva.">
+  <title>Timeline Infinito — Mundial 2026</title>
+
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/pages/timeline.css">
+</head>
+<body>
+
+  <!-- Elementos globales requeridos por ui.js -->
+  <div id="modal_overlay" class="modal_overlay" hidden></div>
+  <div id="modal_sesion" class="modal_sesion" hidden role="dialog" aria-modal="false" aria-labelledby="modal_sesion_titulo">
+    <span class="modal_sesion_icono" aria-hidden="true">🔒</span>
+    <h2 id="modal_sesion_titulo">Sesión expirada</h2>
+    <p>Tu sesión ha expirado. Volvé a conectarte para continuar.</p>
+    <div class="modal_sesion_acciones">
+      <button id="btn_reautenticar" class="btn btn_primary">Volver a conectar</button>
+    </div>
+  </div>
+
+  <div id="banner_cache" class="banner_cache" hidden role="status" aria-live="polite">
+    <span class="banner_cache_icono" aria-hidden="true">⚠️</span>
+    <p>Mostrando datos no actualizados (sin conexión)</p>
+  </div>
+
+  <div id="banner_countdown" class="banner_countdown" hidden role="status" aria-live="polite">
+    <span class="banner_countdown_icono" aria-hidden="true">⏳</span>
+    <span id="texto_countdown" class="texto_countdown"></span>
+  </div>
+
+  <nav-bar></nav-bar>
+
+  <main id="main-content">
+    <section class="section" aria-labelledby="timeline-titulo">
+      <div class="container">
+
+        <header class="section_header">
+          <span class="section_badge">Timeline</span>
+          <h1 id="timeline-titulo">Timeline Infinito</h1>
+          <p>
+            Los 104 partidos del Mundial ordenados cronológicamente.
+            Scrolleá hacia abajo para cargar más partidos.
+          </p>
+        </header>
+
+        <!-- Indicador de cargando más -->
+        <div
+          id="timeline_cargando_mas"
+          class="timeline_cargando_mas"
+          hidden
+          role="status"
+          aria-live="polite"
+        >
+          <div class="spinner" aria-hidden="true"></div>
+          <span class="timeline_cargando_texto">Cargando partidos...</span>
+        </div>
+
+        <!-- Contenedor principal del timeline -->
+        <div
+          id="contenedor_timeline"
+          class="timeline_container"
+          aria-label="Timeline de partidos del Mundial 2026"
+        >
+          <!-- Renderizado progresivamente por timeline.js -->
+
+          <!-- Centinela para el IntersectionObserver — siempre al final -->
+          <div
+            id="timeline_centinela"
+            class="timeline_centinela"
+            aria-hidden="true"
+          ></div>
+        </div>
+
+        <!-- Indicador de fin del timeline -->
+        <div
+          id="timeline_fin"
+          class="timeline_fin"
+          hidden
+          role="status"
+          aria-live="polite"
+        ></div>
+
+      </div>
+    </section>
+  </main>
+
+  <site-footer></site-footer>
+
+  <script src="../assets/js/components.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/pages/timeline.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tour Virtual de Sedes Mundial 2026. Explorá las 16 sedes y sus partidos.">
+  <title>Tour de Sedes</title>
+
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/pages/tour-sedes.css">
+
+</head>
+<body>
+
+  <!-- Elementos globales requeridos por ui.js -->
+  <div id="modal_overlay" class="modal_overlay" hidden></div>
+  <div id="modal_sesion" class="modal_sesion" hidden role="dialog" aria-modal="false" aria-labelledby="modal_sesion_titulo">
+    <span class="modal_sesion_icono" aria-hidden="true">🔒</span>
+    <h2 id="modal_sesion_titulo">Sesión expirada</h2>
+    <p>Tu sesión ha expirado. Volvé a conectarte para continuar.</p>
+    <div class="modal_sesion_acciones">
+      <button id="btn_reautenticar" class="btn btn_primary">
+        Volver a conectar
+      </button>
+    </div>
+  </div>
+
+  <div id="banner_cache" class="banner_cache" hidden role="status" aria-live="polite">
+    <span class="banner_cache_icono" aria-hidden="true">⚠️</span>
+    <p>Mostrando datos no actualizados (sin conexión)</p>
+  </div>
+
+  <div id="banner_countdown" class="banner_countdown" hidden role="status" aria-live="polite">
+    <span class="banner_countdown_icono" aria-hidden="true">⏳</span>
+    <span id="texto_countdown" class="texto_countdown"></span>
+  </div>
+
+  <nav-bar></nav-bar>
+
+  <main id="main-content">
+    <section class="section" aria-labelledby="tour-titulo">
+      <div class="container">
+
+        <header class="section_header">
+          <span class="section_badge">Tour Virtual</span>
+          <h1 id="tour-titulo">Sedes del Mundial 2026</h1>
+          <p>Seleccioná una sede para ver sus partidos. La página se desplazará automáticamente.</p>
+        </header>
+
+        <div class="tour_layout">
+
+          <!-- Panel de sedes -->
+          <div class="sedes_panel" id="contenedor_sedes" aria-label="Lista de sedes" role="list">
+            <!-- Renderizado por tour-sedes.js -->
+          </div>
+
+          <!-- Panel de partidos -->
+          <div>
+            <h2 class="partidos_panel_titulo" id="titulo_sede_activa" tabindex="-1">
+              Partidos
+            </h2>
+            <p class="partidos_panel_subtitulo">
+              Seleccioná una sede del panel izquierdo para ver sus partidos.
+            </p>
+            <div id="contenedor_partidos" aria-live="polite" aria-label="Partidos de la sede seleccionada">
+              <!-- Renderizado por tour-sedes.js -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <site-footer></site-footer>
+
+  <script src="../assets/js/components.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/pages/tour-sedes.js"></script>
+
+</body>
+</html>

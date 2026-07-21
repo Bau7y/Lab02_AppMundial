@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Matriz de Enfrentamientos — Mundial 2026. Resultados cruzados entre equipos de cada grupo.">
+  <title>Matriz de Enfrentamientos — Mundial 2026</title>
+
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/pages/matriz.css">
+</head>
+<body>
+
+  <!-- Elementos globales requeridos por ui.js -->
+  <div id="modal_overlay" class="modal_overlay" hidden></div>
+  <div id="modal_sesion" class="modal_sesion" hidden role="dialog" aria-modal="false" aria-labelledby="modal_sesion_titulo">
+    <span class="modal_sesion_icono" aria-hidden="true">🔒</span>
+    <h2 id="modal_sesion_titulo">Sesión expirada</h2>
+    <p>Tu sesión ha expirado. Volvé a conectarte para continuar.</p>
+    <div class="modal_sesion_acciones">
+      <button id="btn_reautenticar" class="btn btn_primary">Volver a conectar</button>
+    </div>
+  </div>
+
+  <div id="banner_cache" class="banner_cache" hidden role="status" aria-live="polite">
+    <span class="banner_cache_icono" aria-hidden="true">⚠️</span>
+    <p>Mostrando datos no actualizados (sin conexión)</p>
+  </div>
+
+  <div id="banner_countdown" class="banner_countdown" hidden role="status" aria-live="polite">
+    <span class="banner_countdown_icono" aria-hidden="true">⏳</span>
+    <span id="texto_countdown" class="texto_countdown"></span>
+  </div>
+
+  <nav-bar></nav-bar>
+
+  <main id="main-content">
+    <section class="section" aria-labelledby="matriz-titulo">
+      <div class="container">
+
+        <header class="section_header">
+          <span class="section_badge">Matriz</span>
+          <h1 id="matriz-titulo">Matriz de Enfrentamientos</h1>
+          <p>
+            Resultados cruzados entre los equipos de cada grupo.
+            Seleccioná un grupo para ver su cuadrícula.
+          </p>
+        </header>
+
+        <!-- Tabs de grupos -->
+        <div class="selector_grupo_wrap">
+          <span class="selector_grupo_label" id="grupos_label">Grupos</span>
+          <div
+            id="grupos_tabs"
+            class="grupos_tabs"
+            role="tablist"
+            aria-labelledby="grupos_label"
+          >
+            <!-- Renderizado por matriz.js -->
+          </div>
+        </div>
+
+        <!-- Contenedor de la matriz -->
+        <div
+          id="contenedor_matriz"
+          aria-live="polite"
+          aria-label="Matriz de enfrentamientos del grupo seleccionado"
+        >
+          <!-- Renderizado por matriz.js -->
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <site-footer></site-footer>
+
+  <script src="../assets/js/components.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/pages/matriz.js"></script>
+
+</body>
+</html>

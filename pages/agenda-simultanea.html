@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Agenda Simultánea — Mundial 2026. Días con partidos en paralelo.">
+  <title>Agenda Simultánea — Mundial 2026</title>
+
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/pages/agenda.css">
+</head>
+<body>
+
+  <!-- Elementos globales requeridos por ui.js -->
+  <div id="modal_overlay" class="modal_overlay" hidden></div>
+  <div id="modal_sesion" class="modal_sesion" hidden role="dialog" aria-modal="false" aria-labelledby="modal_sesion_titulo">
+    <span class="modal_sesion_icono" aria-hidden="true">🔒</span>
+    <h2 id="modal_sesion_titulo">Sesión expirada</h2>
+    <p>Tu sesión ha expirado. Volvé a conectarte para continuar.</p>
+    <div class="modal_sesion_acciones">
+      <button id="btn_reautenticar" class="btn btn_primary">Volver a conectar</button>
+    </div>
+  </div>
+
+  <div id="banner_cache" class="banner_cache" hidden role="status" aria-live="polite">
+    <span class="banner_cache_icono" aria-hidden="true">⚠️</span>
+    <p>Mostrando datos no actualizados (sin conexión)</p>
+  </div>
+
+  <div id="banner_countdown" class="banner_countdown" hidden role="status" aria-live="polite">
+    <span class="banner_countdown_icono" aria-hidden="true">⏳</span>
+    <span id="texto_countdown" class="texto_countdown"></span>
+  </div>
+
+  <nav-bar></nav-bar>
+
+  <main id="main-content">
+    <section class="section" aria-labelledby="agenda-titulo">
+      <div class="container">
+
+        <header class="section_header">
+          <span class="section_badge">Agenda</span>
+          <h1 id="agenda-titulo">Agenda Simultánea</h1>
+          <p>Días con 2 o más partidos en paralelo, presentados en columnas lado a lado.</p>
+        </header>
+
+        <!-- Navegación de fechas -->
+        <div class="fecha_nav" aria-label="Navegación entre fechas">
+          <button
+            id="btn_fecha_anterior"
+            class="fecha_nav_btn"
+            aria-label="Fecha anterior"
+            disabled
+          >
+            ←
+          </button>
+
+          <div class="fecha_nav_info">
+            <span id="titulo_fecha" class="fecha_nav_titulo" aria-live="polite">
+              Cargando...
+            </span>
+            <span id="contador_fecha" class="fecha_nav_contador" aria-live="polite"></span>
+          </div>
+
+          <button
+            id="btn_fecha_siguiente"
+            class="fecha_nav_btn"
+            aria-label="Fecha siguiente"
+            disabled
+          >
+            →
+          </button>
+        </div>
+
+        <!-- Contenedor del layout dividido -->
+        <div
+          id="contenedor_agenda"
+          aria-live="polite"
+          aria-label="Partidos simultáneos de la fecha seleccionada"
+        >
+          <!-- Renderizado por agenda.js -->
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <site-footer></site-footer>
+
+  <script src="../assets/js/components.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/pages/agenda.js"></script>
+
+</body>
+</html>
