@@ -1,27 +1,18 @@
 /* ============================================================
    dashboard.css — Mundial 2026
-   Estilos exclusivos de dashboard-fanatico.html.
-   Objetivo técnico: tematización dinámica con variables CSS
-   según el equipo favorito. Persistencia en localStorage.
-   Mobile-first.
+   Mobile-first
    ============================================================ */
 
-/* ── 1. Variables de tema del equipo ────────────────────── */
+/* Fix global para hidden */
+[hidden] { display: none !important; }
 
-/*
-  Estas variables se sobreescriben desde JS con los colores
-  del equipo seleccionado. Al cambiar --team_color_primary,
-  todos los elementos que la usan se repintan automáticamente.
-  Es el mecanismo de tematización dinámica del enunciado.
-*/
+/* ── Variables de tema del equipo ── */
 :root {
-  --team_color_primary:  var(--color_primary);
+  --team_color_primary:   var(--color_primary);
   --team_color_secondary: var(--color_primary_bg);
-  --team_color_text:     var(--color_text);
 }
 
-/* ── 2. Selector de equipo ──────────────────────────────── */
-
+/* ── Selector de equipo ── */
 .selector_equipo_wrap {
   display: flex;
   flex-direction: column;
@@ -54,21 +45,34 @@
 .selector_equipo:focus {
   outline: none;
   border-color: var(--team_color_primary);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--team_color_primary) 20%, transparent);
+  box-shadow: 0 0 0 3px rgba(2,185,6,0.15);
 }
 
-/* ── 3. Header del dashboard (se repinta con el equipo) ─── */
-
-.dashboard_header {
-  background: var(--team_color_secondary);
-  border: 1px solid color-mix(in srgb, var(--team_color_primary) 30%, transparent);
-  border-radius: var(--radius_lg);
-  padding: var(--spacing_lg);
-  margin-bottom: var(--spacing_lg);
+/* ── Layout dashboard ── */
+.dashboard_layout {
   display: flex;
   flex-direction: column;
+  gap: var(--spacing_lg);
+}
+
+.dashboard_main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing_md);
+}
+
+/* ── Header del equipo ── */
+.dashboard_header {
+  background: var(--team_color_secondary);
+  border: 1px solid var(--color_border);
+  border-radius: var(--radius_lg);
+  padding: var(--spacing_md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: var(--spacing_sm);
-  transition: background var(--transition), border-color var(--transition);
+  transition: background var(--transition);
+  min-height: 80px;
 }
 
 .dashboard_equipo_nombre {
@@ -77,20 +81,20 @@
   font-weight: 700;
   color: var(--team_color_primary);
   transition: color var(--transition);
+  margin: 0;
 }
 
 .dashboard_equipo_grupo {
   font-size: 0.875rem;
   color: var(--color_text_muted);
+  margin-top: 0.25rem;
 }
 
-/* ── 4. Grid de estadísticas del grupo ──────────────────── */
-
+/* ── Grid de stats ── */
 .dashboard_stats_grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--spacing_sm);
-  margin-bottom: var(--spacing_lg);
 }
 
 .stat_card {
@@ -126,14 +130,12 @@
   color: var(--color_text_muted);
 }
 
-/* ── 5. Posición en el grupo ────────────────────────────── */
-
+/* ── Posición en el grupo ── */
 .posicion_grupo_wrap {
   background: var(--color_bg_card);
   border: 1px solid var(--color_border);
   border-radius: var(--radius_md);
   overflow: hidden;
-  margin-bottom: var(--spacing_lg);
 }
 
 .posicion_grupo_titulo {
@@ -144,6 +146,7 @@
   color: var(--color_text_muted);
   padding: var(--spacing_sm) var(--spacing_md);
   border-bottom: 1px solid var(--color_border);
+  margin: 0;
 }
 
 .posicion_tabla {
@@ -162,9 +165,7 @@
   background: var(--color_bg_secondary);
 }
 
-.posicion_tabla th:first-child {
-  text-align: left;
-}
+.posicion_tabla th:first-child { text-align: left; }
 
 .posicion_tabla td {
   padding: 0.75rem var(--spacing_sm);
@@ -179,11 +180,6 @@
   font-weight: 600;
 }
 
-/*
-  La fila del equipo favorito se resalta con el color
-  del equipo. Este color se aplica desde JS modificando
-  la variable --team_color_secondary en el elemento.
-*/
 .posicion_tabla tr.fila_favorito {
   background: var(--team_color_secondary);
 }
@@ -197,27 +193,20 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 700;
   background: var(--color_bg_secondary);
   color: var(--color_text_muted);
+  margin-right: 4px;
 }
 
-.posicion_num.primero {
-  background: var(--color_accent);
-  color: #000;
-}
+.posicion_num.primero { background: var(--color_accent); color: #000; }
+.posicion_num.segundo { background: var(--color_border); color: var(--color_text); }
 
-.posicion_num.segundo {
-  background: var(--color_border);
-  color: var(--color_text);
-}
-
-/* ── 6. Lista de partidos del equipo ────────────────────── */
-
+/* ── Partidos del equipo ── */
 .partidos_equipo_titulo {
   font-size: 0.8rem;
   font-weight: 600;
@@ -245,26 +234,11 @@
   transition: border-color var(--transition);
 }
 
-.partido_equipo_card:hover {
-  border-color: var(--team_color_primary);
-}
-
-/*
-  La franja izquierda del color del equipo como indicador
-  visual de que el equipo favorito participa en ese partido.
-*/
-.partido_equipo_card.es_local {
-  border-left: 3px solid var(--team_color_primary);
-}
-
-.partido_equipo_card.es_visitante {
-  border-right: 3px solid var(--team_color_primary);
-}
+.partido_equipo_card:hover { border-color: var(--team_color_primary); }
+.partido_equipo_card.es_local    { border-left: 3px solid var(--team_color_primary); }
+.partido_equipo_card.es_visitante { border-right: 3px solid var(--team_color_primary); }
 
 .partido_equipo_rivales {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing_xs);
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--color_text);
@@ -287,8 +261,7 @@
   white-space: nowrap;
 }
 
-/* ── 7. Estado inicial (sin equipo seleccionado) ────────── */
-
+/* ── Placeholder inicial ── */
 .dashboard_placeholder {
   display: flex;
   flex-direction: column;
@@ -306,22 +279,11 @@
   opacity: 0.4;
 }
 
-/* ── 8. Breakpoints ─────────────────────────────────────── */
-
-/* Tablet: 768px */
+/* ── Breakpoints ── */
 @media (min-width: 768px) {
-  .dashboard_stats_grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  .dashboard_header {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
+  .dashboard_stats_grid { grid-template-columns: repeat(4, 1fr); }
 }
 
-/* Desktop: 1024px */
 @media (min-width: 1024px) {
   .dashboard_layout {
     display: grid;

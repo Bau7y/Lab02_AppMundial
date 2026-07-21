@@ -3,16 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Dashboard del Fanático — Mundial 2026. Tu equipo favorito con datos y colores personalizados.">
+  <meta name="description" content="Dashboard del Fanático — Mundial 2026.">
   <title>Dashboard del Fanático — Mundial 2026</title>
-
   <link rel="stylesheet" href="../assets/css/styles.css">
   <link rel="stylesheet" href="../assets/css/components.css">
   <link rel="stylesheet" href="../assets/css/pages/dashboard.css">
 </head>
 <body>
 
-  <!-- Elementos globales requeridos por ui.js -->
   <div id="modal_overlay" class="modal_overlay" hidden></div>
   <div id="modal_sesion" class="modal_sesion" hidden role="dialog" aria-modal="false" aria-labelledby="modal_sesion_titulo">
     <span class="modal_sesion_icono" aria-hidden="true">🔒</span>
@@ -42,75 +40,29 @@
         <header class="section_header">
           <span class="section_badge">Dashboard</span>
           <h1 id="dashboard-titulo">Dashboard del Fanático</h1>
-          <p>
-            Elegí tu equipo favorito. El dashboard se adapta a sus colores
-            y tu selección se guarda para la próxima visita.
-          </p>
+          <p>Elegí tu equipo favorito. El dashboard se adapta a sus colores y tu selección se guarda para la próxima visita.</p>
         </header>
 
-        <!-- Selector de equipo favorito -->
         <div class="selector_equipo_wrap">
-          <label for="selector_equipo" class="selector_equipo_label">
-            Tu equipo favorito
-          </label>
-          <select
-            id="selector_equipo"
-            class="selector_equipo"
-            aria-label="Seleccioná tu equipo favorito del Mundial 2026"
-          >
+          <label for="selector_equipo" class="selector_equipo_label">Tu equipo favorito</label>
+          <select id="selector_equipo" class="selector_equipo" aria-label="Seleccioná tu equipo favorito">
             <option value="">Cargando equipos...</option>
           </select>
         </div>
 
-        <!-- Layout dashboard: contenido principal + lateral -->
         <div class="dashboard_layout">
 
-          <!-- Contenido principal -->
-          <div>
-
-            <!-- Header del equipo (repintado con colores del equipo) -->
-            <div id="dashboard_header" class="dashboard_header" aria-live="polite">
-              <!-- Renderizado por dashboard.js -->
-            </div>
-
-            <!-- Grid de estadísticas -->
-            <div
-              id="contenedor_dashboard"
-              class="dashboard_stats_grid"
-              aria-live="polite"
-              aria-label="Estadísticas del equipo favorito"
-            >
-              <!-- Renderizado por dashboard.js -->
-            </div>
-
+          <div class="dashboard_main">
+            <div id="dashboard_header" class="dashboard_header" aria-live="polite"></div>
+            <div id="contenedor_dashboard" class="dashboard_stats_grid" aria-live="polite" aria-label="Estadísticas del equipo"></div>
+            <div id="contenedor_partidos_equipo" aria-live="polite" aria-label="Partidos del equipo favorito" style="margin-top: var(--spacing_lg);"></div>
           </div>
 
-          <!-- Lateral: tabla de posición del grupo -->
           <div class="dashboard_lateral">
-
-            <div
-              id="contenedor_grupo"
-              class="posicion_grupo_wrap"
-              aria-live="polite"
-              aria-label="Posición en el grupo"
-            >
-              <!-- Renderizado por dashboard.js -->
-            </div>
-
+            <div id="contenedor_grupo" class="posicion_grupo_wrap" aria-live="polite" aria-label="Posición en el grupo"></div>
           </div>
 
         </div>
-
-        <!-- Partidos del equipo -->
-        <div
-          id="contenedor_partidos_equipo"
-          aria-live="polite"
-          aria-label="Partidos del equipo favorito"
-          style="margin-top: var(--spacing_lg);"
-        >
-          <!-- Renderizado por dashboard.js -->
-        </div>
-
       </div>
     </section>
   </main>
@@ -121,6 +73,5 @@
   <script src="../assets/js/ui.js"></script>
   <script src="../assets/js/api.js"></script>
   <script src="../assets/js/pages/dashboard.js"></script>
-
 </body>
 </html>

@@ -1,9 +1,11 @@
 /* ============================================================
    dashboard.js — Mundial 2026
-   Campos API: teams: id, name_en, flag, groups (letra)
-               groups: name, teams: [{team_id, mp, w, d, l, gf, ga, pts}]
-               games: home_team_id, away_team_id, finished: "TRUE"
-                      home_team_name_en, away_team_name_en
+   Campos API reales:
+   - teams: id, name_en, flag, groups (letra del grupo)
+   - groups: _id, name, teams:[{team_id,mp,w,d,l,gf,ga,pts,gd}]
+   - games: home_team_id, away_team_id, home_team_name_en,
+            away_team_name_en, finished:"TRUE",
+            home_score, away_score, local_date:"MM/DD/YYYY HH:MM"
    ============================================================ */
 
 const selector_equipo      = document.getElementById('selector_equipo')
@@ -16,28 +18,31 @@ const KEY_EQUIPO_FAVORITO = 'wc26_equipo_favorito'
 let todos_los_equipos  = []
 let todos_los_partidos = []
 let todos_los_grupos   = []
-let equipo_activo      = null
 
 const COLORES_EQUIPOS = {
-  'Mexico':          { primary: '#006847', secondary: '#CE1126' },
-  'South Africa':    { primary: '#007A4D', secondary: '#FFB612' },
-  'Brazil':          { primary: '#009C3B', secondary: '#FDEF42' },
-  'Argentina':       { primary: '#74ACDF', secondary: '#F6E01B' },
-  'France':          { primary: '#002395', secondary: '#ED2939' },
-  'Germany':         { primary: '#000000', secondary: '#DD0000' },
-  'Spain':           { primary: '#AA151B', secondary: '#F1BF00' },
-  'England':         { primary: '#CF081F', secondary: '#FFFFFF' },
-  'Portugal':        { primary: '#006600', secondary: '#FF0000' },
-  'Netherlands':     { primary: '#FF6600', secondary: '#FFFFFF' },
-  'United States':   { primary: '#002868', secondary: '#BF0A30' },
-  'Canada':          { primary: '#FF0000', secondary: '#FFFFFF' },
-  'Morocco':         { primary: '#C1272D', secondary: '#006233' },
-  'Japan':           { primary: '#BC002D', secondary: '#FFFFFF' },
-  'Uruguay':         { primary: '#5EB6E4', secondary: '#FFFFFF' },
-  'Costa Rica':      { primary: '#002B7F', secondary: '#CE1126' },
+  'Mexico':          { primary: '#006847' },
+  'Brazil':          { primary: '#009C3B' },
+  'Argentina':       { primary: '#74ACDF' },
+  'France':          { primary: '#002395' },
+  'Germany':         { primary: '#333333' },
+  'Spain':           { primary: '#AA151B' },
+  'England':         { primary: '#CF081F' },
+  'Portugal':        { primary: '#006600' },
+  'Netherlands':     { primary: '#FF6600' },
+  'United States':   { primary: '#002868' },
+  'Canada':          { primary: '#FF0000' },
+  'Morocco':         { primary: '#C1272D' },
+  'Japan':           { primary: '#BC002D' },
+  'Uruguay':         { primary: '#5EB6E4' },
+  'Costa Rica':      { primary: '#002B7F' },
+  'Croatia':         { primary: '#FF0000' },
+  'South Africa':    { primary: '#007A4D' },
+  'Ghana':           { primary: '#006B3F' },
+  'Senegal':         { primary: '#00853F' },
+  'Australia':       { primary: '#00843D' },
 }
 
-const COLOR_DEFAULT = { primary: '#02B906', secondary: '#E6FDE7' }
+const COLOR_DEFAULT = { primary: '#02B906' }
 
 document.addEventListener('DOMContentLoaded', () => {
   iniciarVista()
@@ -79,7 +84,6 @@ async function iniciarVista() {
     poblarSelectorEquipos(todos_los_equipos)
 
     const favorito_guardado = leerEquipoFavorito()
-
     if (favorito_guardado) {
       const equipo = todos_los_equipos.find(
         e => String(e.id) === String(favorito_guardado.id)
@@ -101,14 +105,13 @@ async function iniciarVista() {
 
 function poblarSelectorEquipos(equipos) {
   if (!selector_equipo) return
-
   selector_equipo.innerHTML = '<option value="">Elegí tu equipo favorito</option>'
 
-  const equipos_ordenados = [...equipos].sort((a, b) =>
+  const ordenados = [...equipos].sort((a, b) =>
     (a.name_en ?? '').localeCompare(b.name_en ?? '', 'es')
   )
 
-  equipos_ordenados.forEach(equipo => {
+  ordenados.forEach(equipo => {
     const option = document.createElement('option')
     option.value       = equipo.id
     option.textContent = equipo.name_en ?? `Equipo ${equipo.id}`
@@ -117,44 +120,42 @@ function poblarSelectorEquipos(equipos) {
 }
 
 function renderizarDashboard(equipo) {
-  equipo_activo = equipo
   ocultarSkeletons(contenedor_dashboard)
   aplicarTemaEquipo(equipo.name_en)
   renderizarHeaderEquipo(equipo)
+  renderizarPosicionGrupo(equipo)
 
   const partidos_equipo = todos_los_partidos.filter(p =>
     String(p.home_team_id) === String(equipo.id) ||
     String(p.away_team_id) === String(equipo.id)
   )
 
+  renderizarStatsEquipo(partidos_equipo, equipo)
   renderizarPartidosEquipo(partidos_equipo, equipo)
-  renderizarPosicionGrupo(equipo)
 }
 
-function aplicarTemaEquipo(nombre_equipo) {
-  const colores = COLORES_EQUIPOS[nombre_equipo] ?? COLOR_DEFAULT
-
+/* ── Tematización dinámica ── */
+function aplicarTemaEquipo(nombre) {
+  const colores = COLORES_EQUIPOS[nombre] ?? COLOR_DEFAULT
   document.documentElement.style.setProperty('--team_color_primary', colores.primary)
   document.documentElement.style.setProperty(
-    '--team_color_secondary',
-    hexAColor(colores.primary, 0.12)
+    '--team_color_secondary', hexAColor(colores.primary, 0.1)
   )
 }
 
 function hexAColor(hex, opacidad) {
-  const r = parseInt(hex.slice(1, 3), 16)
-  const g = parseInt(hex.slice(3, 5), 16)
-  const b = parseInt(hex.slice(5, 7), 16)
-  return `rgba(${r}, ${g}, ${b}, ${opacidad})`
+  const h = hex.replace('#', '')
+  const r = parseInt(h.slice(0, 2), 16)
+  const g = parseInt(h.slice(2, 4), 16)
+  const b = parseInt(h.slice(4, 6), 16)
+  return `rgba(${r},${g},${b},${opacidad})`
 }
 
+/* ── Header del equipo ── */
 function renderizarHeaderEquipo(equipo) {
   const header = document.getElementById('dashboard_header')
   if (!header) return
 
-  /*
-    El campo del grupo en teams es 'groups' (letra: "A", "B", etc.)
-  */
   header.innerHTML = `
     <div>
       <h2 class="dashboard_equipo_nombre">${equipo.name_en ?? 'Equipo'}</h2>
@@ -166,53 +167,80 @@ function renderizarHeaderEquipo(equipo) {
   `
 }
 
+/* ── Stats calculadas de los partidos ── */
+function renderizarStatsEquipo(partidos, equipo) {
+  if (!contenedor_dashboard) return
+
+  const jugados = partidos.filter(p => p.finished === 'TRUE')
+  let gf = 0, gc = 0, ganados = 0, perdidos = 0, empatados = 0
+
+  jugados.forEach(p => {
+    const es_local = String(p.home_team_id) === String(equipo.id)
+    const mis_goles    = Number(es_local ? p.home_score : p.away_score) || 0
+    const goles_rival  = Number(es_local ? p.away_score : p.home_score) || 0
+    gf += mis_goles
+    gc += goles_rival
+    if (mis_goles > goles_rival) ganados++
+    else if (mis_goles < goles_rival) perdidos++
+    else empatados++
+  })
+
+  const pts = ganados * 3 + empatados
+
+  contenedor_dashboard.innerHTML = `
+    <div class="stat_card">
+      <span class="stat_card_valor">${pts}</span>
+      <span class="stat_card_label">Puntos</span>
+    </div>
+    <div class="stat_card">
+      <span class="stat_card_valor">${jugados.length}</span>
+      <span class="stat_card_label">Jugados</span>
+    </div>
+    <div class="stat_card">
+      <span class="stat_card_valor">${gf}</span>
+      <span class="stat_card_label">Goles a favor</span>
+    </div>
+    <div class="stat_card">
+      <span class="stat_card_valor">${gc}</span>
+      <span class="stat_card_label">Goles en contra</span>
+    </div>
+  `
+}
+
+/* ── Posición en el grupo ── */
 function renderizarPosicionGrupo(equipo) {
   if (!contenedor_grupo) return
 
-  /*
-    En groups, cada grupo tiene teams: [{team_id, mp, w, d, l, gf, ga, pts}]
-    Buscamos el grupo que contiene el team_id de nuestro equipo
-  */
   const grupo = todos_los_grupos.find(g =>
     g.teams?.some(t => String(t.team_id) === String(equipo.id))
   )
 
-  if (!grupo || !grupo.teams) {
+  if (!grupo?.teams) {
     contenedor_grupo.innerHTML = `
       <p class="posicion_grupo_titulo">Posición en el grupo</p>
-      <div style="padding: var(--spacing_md)">
-        <p>No hay datos de grupo disponibles.</p>
-      </div>
+      <div style="padding:var(--spacing_md)"><p>No hay datos disponibles.</p></div>
     `
     return
   }
 
-  /* Ordenar por puntos, luego por diferencia de goles */
-  const equipos_grupo = [...grupo.teams].sort((a, b) => {
-    const pts_diff = (Number(b.pts) ?? 0) - (Number(a.pts) ?? 0)
-    if (pts_diff !== 0) return pts_diff
-    const dif_a = (Number(a.gf) ?? 0) - (Number(a.ga) ?? 0)
-    const dif_b = (Number(b.gf) ?? 0) - (Number(b.ga) ?? 0)
-    return dif_b - dif_a
-  })
-
-  /*
-    Para mostrar el nombre necesitamos cruzar team_id con todos_los_equipos
-  */
   const equipos_map = new Map(todos_los_equipos.map(e => [String(e.id), e]))
 
-  const filas = equipos_grupo.map((t, index) => {
-    const es_favorito  = String(t.team_id) === String(equipo.id)
-    const pos          = index + 1
-    const nombre_equipo = equipos_map.get(String(t.team_id))?.name_en ?? `Equipo ${t.team_id}`
+  const ordenados = [...grupo.teams].sort((a, b) => {
+    const diff_pts = Number(b.pts) - Number(a.pts)
+    if (diff_pts !== 0) return diff_pts
+    return Number(b.gd ?? 0) - Number(a.gd ?? 0)
+  })
+
+  const filas = ordenados.map((t, i) => {
+    const es_fav  = String(t.team_id) === String(equipo.id)
+    const pos     = i + 1
+    const nombre  = equipos_map.get(String(t.team_id))?.name_en ?? `Equipo ${t.team_id}`
 
     return `
-      <tr class="${es_favorito ? 'fila_favorito' : ''}">
+      <tr class="${es_fav ? 'fila_favorito' : ''}">
         <td>
-          <span class="posicion_num ${pos === 1 ? 'primero' : pos === 2 ? 'segundo' : ''}">
-            ${pos}
-          </span>
-          ${nombre_equipo}
+          <span class="posicion_num ${pos===1?'primero':pos===2?'segundo':''}">${pos}</span>
+          ${nombre}
         </td>
         <td>${t.mp ?? 0}</td>
         <td>${t.w  ?? 0}</td>
@@ -227,7 +255,7 @@ function renderizarPosicionGrupo(equipo) {
 
   contenedor_grupo.innerHTML = `
     <p class="posicion_grupo_titulo">Grupo ${grupo.name ?? ''}</p>
-    <table class="posicion_tabla" aria-label="Tabla del grupo ${grupo.name ?? ''}">
+    <table class="posicion_tabla" aria-label="Tabla Grupo ${grupo.name}">
       <thead>
         <tr>
           <th scope="col">Equipo</th>
@@ -245,6 +273,7 @@ function renderizarPosicionGrupo(equipo) {
   `
 }
 
+/* ── Partidos del equipo ── */
 function renderizarPartidosEquipo(partidos, equipo) {
   if (!contenedor_partidos) return
 
@@ -253,14 +282,14 @@ function renderizarPartidosEquipo(partidos, equipo) {
     return
   }
 
-  const partidos_ordenados = [...partidos].sort((a, b) =>
+  const ordenados = [...partidos].sort((a, b) =>
     new Date(a.local_date ?? '') - new Date(b.local_date ?? '')
   )
 
   contenedor_partidos.innerHTML = `
     <p class="partidos_equipo_titulo">Partidos</p>
     <div class="partidos_equipo_lista">
-      ${partidos_ordenados.map(p => crearCardPartido(p, equipo)).join('')}
+      ${ordenados.map(p => crearCardPartido(p, equipo)).join('')}
     </div>
   `
 }
@@ -279,8 +308,7 @@ function crearCardPartido(partido, equipo) {
 
   return `
     <div class="partido_equipo_card ${es_local ? 'es_local' : 'es_visitante'}"
-         role="article"
-         aria-label="Partido vs ${rival}">
+         role="article" aria-label="vs ${rival}">
       <div class="partido_equipo_rivales">
         ${es_local
           ? `<strong>${equipo.name_en}</strong> vs ${rival}`
@@ -292,23 +320,24 @@ function crearCardPartido(partido, equipo) {
   `
 }
 
+/* ── localStorage ── */
 function guardarEquipoFavorito(equipo) {
   localStorage.setItem(KEY_EQUIPO_FAVORITO, JSON.stringify({
-    id:   equipo.id,
-    name: equipo.name_en
+    id: equipo.id, name: equipo.name_en
   }))
 }
 
 function leerEquipoFavorito() {
   try {
-    const guardado = localStorage.getItem(KEY_EQUIPO_FAVORITO)
-    return guardado ? JSON.parse(guardado) : null
+    const g = localStorage.getItem(KEY_EQUIPO_FAVORITO)
+    return g ? JSON.parse(g) : null
   } catch {
     localStorage.removeItem(KEY_EQUIPO_FAVORITO)
     return null
   }
 }
 
+/* ── Placeholder ── */
 function mostrarPlaceholder() {
   if (!contenedor_dashboard) return
   contenedor_dashboard.innerHTML = `
