@@ -103,11 +103,18 @@ async function peticionBase(endpoint) {
     (sin respuesta del servidor). Ese error se deja burbujear hacia
     fetchConBackoff() que lo trata como fallo de red.
   */
+  /*
+    mode: 'cors' indica explícitamente que esta es una petición
+    cross-origin. Es el valor por defecto de fetch pero se
+    declara para claridad.
+    Se omite Content-Type en GET porque genera un preflight
+    OPTIONS innecesario que algunas APIs públicas rechazan.
+  */
   const respuesta = await fetch(url, {
     method: 'GET',
+    mode:   'cors',
     headers: {
-      'Content-Type': 'application/json',
-      'Accept':       'application/json'
+      'Accept': 'application/json'
     }
   })
 
@@ -164,13 +171,30 @@ async function fetchConBackoff(endpoint) {
 
       ultimoError = error
 
-      /* ── Error 401: sesión expirada ── */
+      /* ── Error 401 ── */
+      /*
+        La API worldcup26.ir es pública y no requiere token.
+        Un 401 aquí indica un rechazo temporal del servidor
+        (puede ocurrir por CORS o configuración del servidor),
+        no una sesión expirada del usuario.
+        Se trata igual que un 500: backoff exponencial y
+        fallback a caché. El modal de sesión expirada queda
+        como código de defensa para contextos con JWT real.
+      */
       if (error.status === 401) {
-        /*
-          El 401 no se reintenta — el token está vencido.
-          Disparamos el evento y salimos del loop inmediatamente.
-        */
-        dispararEvento('api:session-expired')
+        if (intento < MAX_RETRIES - 1) {
+          const espera = BACKOFF_DELAYS[intento] ?? BACKOFF_DELAYS[BACKOFF_DELAYS.length - 1]
+
+          dispararEvento('api:retry', {
+            intento: intento + 1,
+            maxIntentos: MAX_RETRIES,
+            esperaMs: espera,
+            endpoint
+          })
+
+          await esperar(espera)
+          continue
+        }
         break
       }
 
@@ -247,23 +271,25 @@ async function fetchConBackoff(endpoint) {
   fetchConBackoff('/get/stadiums') desde las páginas,
   haciendo el código más legible y el refactor más fácil.
 */
-
 async function obtenerSedes() {
-  return await fetchConBackoff('/get/stadiums')
+  const resultado = await fetchConBackoff('/get/stadiums')
+  return { ...resultado, datos: resultado.datos.stadiums ?? [] }
 }
 
 async function obtenerPartidos() {
-  return await fetchConBackoff('/get/games')
+  const resultado = await fetchConBackoff('/get/games')
+  return { ...resultado, datos: resultado.datos.games ?? [] }
 }
 
 async function obtenerEquipos() {
-  return await fetchConBackoff('/get/teams')
+  const resultado = await fetchConBackoff('/get/teams')
+  return { ...resultado, datos: resultado.datos.teams ?? [] }
 }
 
 async function obtenerGrupos() {
-  return await fetchConBackoff('/get/groups')
+  const resultado = await fetchConBackoff('/get/groups')
+  return { ...resultado, datos: resultado.datos.groups ?? [] }
 }
-
 /* ── 8. Limpiar caché de un endpoint ────────────────────── */
 
 /*

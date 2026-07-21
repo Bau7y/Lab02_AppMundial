@@ -13,6 +13,12 @@
   position: fixed lo fija al viewport, no al documento.
   z-index: 1100 — por encima del navbar (z-index: 1000).
 */
+
+[hidden] {
+  display: none !important;
+}
+
+
 .modal_overlay {
   position: fixed;
   inset: 0;

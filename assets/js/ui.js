@@ -69,7 +69,6 @@ document.addEventListener('api:retry', (e) => {
 
 function mostrarModalSesion() {
   if (!modalSesion || !overlayModal) return
-
   modalSesion.removeAttribute('hidden')
   overlayModal.removeAttribute('hidden')
 
