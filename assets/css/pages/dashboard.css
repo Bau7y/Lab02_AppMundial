@@ -1,286 +1,337 @@
 /* ============================================================
-   timeline.css — Mundial 2026
-   Estilos exclusivos de timeline-infinito.html.
-   Objetivo técnico: IntersectionObserver para carga
-   progresiva de bloques de 10 partidos.
+   dashboard.css — Mundial 2026
+   Estilos exclusivos de dashboard-fanatico.html.
+   Objetivo técnico: tematización dinámica con variables CSS
+   según el equipo favorito. Persistencia en localStorage.
    Mobile-first.
    ============================================================ */
 
-/* ── 1. Contenedor principal del timeline ───────────────── */
+/* ── 1. Variables de tema del equipo ────────────────────── */
 
-.timeline_container {
+/*
+  Estas variables se sobreescriben desde JS con los colores
+  del equipo seleccionado. Al cambiar --team_color_primary,
+  todos los elementos que la usan se repintan automáticamente.
+  Es el mecanismo de tematización dinámica del enunciado.
+*/
+:root {
+  --team_color_primary:  var(--color_primary);
+  --team_color_secondary: var(--color_primary_bg);
+  --team_color_text:     var(--color_text);
+}
+
+/* ── 2. Selector de equipo ──────────────────────────────── */
+
+.selector_equipo_wrap {
   display: flex;
   flex-direction: column;
-  gap: 0;
-  position: relative;
+  gap: var(--spacing_xs);
+  margin-bottom: var(--spacing_lg);
 }
 
-/*
-  La línea vertical del timeline se dibuja con ::before
-  en el contenedor. Corre de arriba a abajo por el centro
-  izquierdo de cada card.
-*/
-.timeline_container::before {
-  content: '';
-  position: absolute;
-  left: 20px;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    var(--color_primary) 5%,
-    var(--color_primary) 95%,
-    transparent
-  );
+.selector_equipo_label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color_text_muted);
 }
 
-/* ── 2. Item del timeline ───────────────────────────────── */
+.selector_equipo {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-family: var(--font_body);
+  font-size: 0.95rem;
+  color: var(--color_text);
+  background: var(--color_bg_card);
+  border: 1.5px solid var(--color_border);
+  border-radius: var(--radius_md);
+  cursor: pointer;
+  appearance: none;
+  transition: border-color var(--transition);
+}
 
-.timeline_item {
+.selector_equipo:focus {
+  outline: none;
+  border-color: var(--team_color_primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--team_color_primary) 20%, transparent);
+}
+
+/* ── 3. Header del dashboard (se repinta con el equipo) ─── */
+
+.dashboard_header {
+  background: var(--team_color_secondary);
+  border: 1px solid color-mix(in srgb, var(--team_color_primary) 30%, transparent);
+  border-radius: var(--radius_lg);
+  padding: var(--spacing_lg);
+  margin-bottom: var(--spacing_lg);
   display: flex;
-  gap: var(--spacing_md);
-  padding-bottom: var(--spacing_md);
-  position: relative;
+  flex-direction: column;
+  gap: var(--spacing_sm);
+  transition: background var(--transition), border-color var(--transition);
 }
 
-/*
-  El punto del timeline: círculo sobre la línea vertical.
-  position: absolute relativo al .timeline_item.
-  left: 12px lo centra sobre la línea de 2px en left:20px.
-*/
-.timeline_punto {
-  position: absolute;
-  left: 12px;
-  top: 20px;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: var(--color_primary);
-  border: 2px solid var(--color_bg);
-  box-shadow: 0 0 0 2px var(--color_primary);
-  flex-shrink: 0;
-  z-index: 1;
-  transition: transform var(--transition);
+.dashboard_equipo_nombre {
+  font-family: var(--font_display);
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 700;
+  color: var(--team_color_primary);
+  transition: color var(--transition);
 }
 
-.timeline_item:hover .timeline_punto {
-  transform: scale(1.3);
+.dashboard_equipo_grupo {
+  font-size: 0.875rem;
+  color: var(--color_text_muted);
 }
 
-/* Espacio izquierdo para que la card no tape la línea */
-.timeline_card_wrap {
-  margin-left: 44px;
-  flex: 1;
+/* ── 4. Grid de estadísticas del grupo ──────────────────── */
+
+.dashboard_stats_grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing_sm);
+  margin-bottom: var(--spacing_lg);
 }
 
-/* ── 3. Card de partido en el timeline ──────────────────── */
-
-.timeline_card {
+.stat_card {
   background: var(--color_bg_card);
   border: 1px solid var(--color_border);
   border-radius: var(--radius_md);
   padding: var(--spacing_md);
+  text-align: center;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing_xs);
-  transition: box-shadow var(--transition), border-color var(--transition);
+  gap: 0.3rem;
+  transition: border-color var(--transition);
 }
 
-.timeline_card:hover {
-  box-shadow: var(--shadow_md);
-  border-color: var(--color_primary);
+.stat_card:hover {
+  border-color: var(--team_color_primary);
 }
 
-.timeline_fecha {
+.stat_card_valor {
+  font-family: var(--font_display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--team_color_primary);
+  line-height: 1;
+  transition: color var(--transition);
+}
+
+.stat_card_label {
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--color_primary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color_text_muted);
+}
+
+/* ── 5. Posición en el grupo ────────────────────────────── */
+
+.posicion_grupo_wrap {
+  background: var(--color_bg_card);
+  border: 1px solid var(--color_border);
+  border-radius: var(--radius_md);
+  overflow: hidden;
+  margin-bottom: var(--spacing_lg);
+}
+
+.posicion_grupo_titulo {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color_text_muted);
+  padding: var(--spacing_sm) var(--spacing_md);
+  border-bottom: 1px solid var(--color_border);
+}
+
+.posicion_tabla {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.posicion_tabla th {
+  font-size: 0.72rem;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-}
-
-.timeline_equipos {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--spacing_xs);
-}
-
-.timeline_equipo {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--color_text);
-  flex: 1;
-}
-
-.timeline_equipo_visitante {
-  text-align: right;
-}
-
-.timeline_resultado {
-  font-family: var(--font_display);
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--color_primary);
-  text-align: center;
-  min-width: 60px;
-}
-
-.timeline_vs {
-  font-size: 0.78rem;
   color: var(--color_text_muted);
-  text-align: center;
-  min-width: 60px;
+  padding: 0.6rem var(--spacing_sm);
+  text-align: right;
+  background: var(--color_bg_secondary);
 }
 
-.timeline_meta {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  padding-top: var(--spacing_xs);
+.posicion_tabla th:first-child {
+  text-align: left;
+}
+
+.posicion_tabla td {
+  padding: 0.75rem var(--spacing_sm);
+  font-size: 0.875rem;
+  color: var(--color_text);
+  text-align: right;
   border-top: 1px solid var(--color_border);
 }
 
-.timeline_meta_item {
-  font-size: 0.72rem;
+.posicion_tabla td:first-child {
+  text-align: left;
+  font-weight: 600;
+}
+
+/*
+  La fila del equipo favorito se resalta con el color
+  del equipo. Este color se aplica desde JS modificando
+  la variable --team_color_secondary en el elemento.
+*/
+.posicion_tabla tr.fila_favorito {
+  background: var(--team_color_secondary);
+}
+
+.posicion_tabla tr.fila_favorito td {
+  color: var(--team_color_primary);
+  font-weight: 700;
+}
+
+.posicion_num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: var(--color_bg_secondary);
   color: var(--color_text_muted);
 }
 
-/* ── 4. Separador de fecha ──────────────────────────────── */
-
-/*
-  Cuando cambia el día en el timeline, se inserta
-  un separador con la fecha para orientar al usuario.
-*/
-.timeline_separador {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing_sm);
-  margin-left: 44px;
-  margin-bottom: var(--spacing_sm);
-  margin-top: var(--spacing_xs);
+.posicion_num.primero {
+  background: var(--color_accent);
+  color: #000;
 }
 
-.timeline_separador_fecha {
-  font-family: var(--font_display);
+.posicion_num.segundo {
+  background: var(--color_border);
+  color: var(--color_text);
+}
+
+/* ── 6. Lista de partidos del equipo ────────────────────── */
+
+.partidos_equipo_titulo {
   font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color_text_muted);
+  margin-bottom: var(--spacing_sm);
+}
+
+.partidos_equipo_lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing_xs);
+}
+
+.partido_equipo_card {
+  background: var(--color_bg_card);
+  border: 1px solid var(--color_border);
+  border-radius: var(--radius_md);
+  padding: var(--spacing_sm) var(--spacing_md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing_sm);
+  transition: border-color var(--transition);
+}
+
+.partido_equipo_card:hover {
+  border-color: var(--team_color_primary);
+}
+
+/*
+  La franja izquierda del color del equipo como indicador
+  visual de que el equipo favorito participa en ese partido.
+*/
+.partido_equipo_card.es_local {
+  border-left: 3px solid var(--team_color_primary);
+}
+
+.partido_equipo_card.es_visitante {
+  border-right: 3px solid var(--team_color_primary);
+}
+
+.partido_equipo_rivales {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing_xs);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color_text);
+  flex: 1;
+  min-width: 0;
+}
+
+.partido_equipo_marcador {
+  font-family: var(--font_display);
+  font-size: 1rem;
   font-weight: 700;
+  color: var(--team_color_primary);
+  white-space: nowrap;
+  transition: color var(--transition);
+}
+
+.partido_equipo_fecha {
+  font-size: 0.75rem;
   color: var(--color_text_muted);
   white-space: nowrap;
 }
 
-.timeline_separador_linea {
-  flex: 1;
-  height: 1px;
-  background: var(--color_border);
-}
+/* ── 7. Estado inicial (sin equipo seleccionado) ────────── */
 
-/* ── 5. Centinela del IntersectionObserver ──────────────── */
-
-/*
-  Elemento invisible al final de la lista.
-  El IntersectionObserver lo observa y cuando entra
-  al viewport dispara la carga del siguiente bloque.
-*/
-.timeline_centinela {
-  height: 40px;
-  width: 100%;
-}
-
-/* ── 6. Indicador de carga de más partidos ──────────────── */
-
-.timeline_cargando_mas {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing_xs);
-  padding: var(--spacing_sm);
-  color: var(--color_text_muted);
-  font-size: 0.875rem;
-  margin-left: 44px;
-}
-
-/* ── 7. Estado: todos los partidos cargados ─────────────── */
-
-.timeline_fin {
-  text-align: center;
-  padding: var(--spacing_md);
-  margin-left: 44px;
-  color: var(--color_text_muted);
-  font-size: 0.875rem;
-  border-top: 1px solid var(--color_border);
-}
-
-/* ── 8. Estado de error con reintento ───────────────────── */
-
-/*
-  Si la petición inicial falla, el observer no puede
-  quedar esperando. Se muestra error con botón de reintento
-  que dispara el backoff exponencial desde api.js.
-*/
-.timeline_error {
+.dashboard_placeholder {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spacing_sm);
+  justify-content: center;
   padding: var(--spacing_xl);
   text-align: center;
+  border: 2px dashed var(--color_border);
+  border-radius: var(--radius_lg);
+  gap: var(--spacing_sm);
 }
 
-/* ── 9. Breakpoints ─────────────────────────────────────── */
+.dashboard_placeholder_icono {
+  font-size: 3rem;
+  opacity: 0.4;
+}
+
+/* ── 8. Breakpoints ─────────────────────────────────────── */
 
 /* Tablet: 768px */
 @media (min-width: 768px) {
-  .timeline_container::before {
-    left: 28px;
+  .dashboard_stats_grid {
+    grid-template-columns: repeat(4, 1fr);
   }
 
-  .timeline_punto {
-    left: 20px;
-    width: 18px;
-    height: 18px;
-  }
-
-  .timeline_card_wrap {
-    margin-left: 60px;
-  }
-
-  .timeline_separador {
-    margin-left: 60px;
-  }
-
-  .timeline_cargando_mas {
-    margin-left: 60px;
-  }
-
-  .timeline_fin {
-    margin-left: 60px;
+  .dashboard_header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
   }
 }
 
 /* Desktop: 1024px */
 @media (min-width: 1024px) {
-  .timeline_card {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+  .dashboard_layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: var(--spacing_lg);
+    align-items: start;
   }
 
-  .timeline_equipos {
-    flex: 1;
-    max-width: 460px;
-  }
-
-  .timeline_meta {
-    border-top: none;
-    padding-top: 0;
-    border-left: 1px solid var(--color_border);
-    padding-left: var(--spacing_sm);
-    flex-direction: column;
-    align-items: flex-end;
-    min-width: 140px;
+  .dashboard_lateral {
+    position: sticky;
+    top: calc(var(--navbar_h) + var(--spacing_sm));
   }
 }
