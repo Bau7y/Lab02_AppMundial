@@ -5,7 +5,7 @@
    ============================================================ */
 
 const contenedor_timeline = document.getElementById('contenedor_timeline')
-const centinela           = document.getElementById('timeline_centinela')
+let   centinela           = document.getElementById('timeline_centinela')
 const indicador_cargando  = document.getElementById('timeline_cargando_mas')
 const indicador_fin       = document.getElementById('timeline_fin')
 
@@ -55,7 +55,21 @@ async function iniciarVista() {
     partidos_insertados    = 0
     fecha_actual_separador = ''
 
+    // Si el centinela no existe, crearlo
+    if (!centinela) {
+      centinela = document.createElement('div')
+      centinela.id = 'timeline_centinela'
+      centinela.className = 'timeline_centinela'
+      centinela.setAttribute('aria-hidden', 'true')
+      contenedor_timeline.appendChild(centinela)
+    }
     insertarBloque()
+
+    centinela = document.createElement('div')
+    centinela.id = 'timeline_centinela'
+    centinela.className = 'timeline_centinela'
+    centinela.setAttribute('aria-hidden', 'true')
+    contenedor_timeline.appendChild(centinela)
 
     if (partidos_insertados < todos_los_partidos.length) {
       activarObserver()
@@ -64,13 +78,20 @@ async function iniciarVista() {
     }
 
   } catch (error) {
+    console.error('ERROR EN TIMELINE:', error.message, error.stack) 
     ocultarSkeletons(contenedor_timeline)
     mostrarError(contenedor_timeline, 'No se pudo cargar el timeline.', '/get/games')
   }
 }
 
 function activarObserver() {
-  if (!centinela) return
+  if (!centinela || !contenedor_timeline.contains(centinela)) {
+    centinela = document.createElement('div')
+    centinela.id = 'timeline_centinela'
+    centinela.className = 'timeline_centinela'
+    centinela.setAttribute('aria-hidden', 'true')
+    contenedor_timeline.appendChild(centinela)
+  }
 
   if (observer) {
     observer.disconnect()
@@ -80,9 +101,7 @@ function activarObserver() {
   observer = new IntersectionObserver((entradas) => {
     entradas.forEach(entrada => {
       if (!entrada.isIntersecting) return
-
       insertarBloque()
-
       if (partidos_insertados >= todos_los_partidos.length) {
         observer.disconnect()
         observer = null
@@ -102,10 +121,9 @@ function insertarBloque() {
     partidos_insertados + BLOQUE_SIZE
   )
 
+  const centinela_valido = centinela && contenedor_timeline.contains(centinela)
+
   siguiente_bloque.forEach(partido => {
-    /*
-      Extraer la fecha sin hora: "06/11/2026 13:00" → "06/11/2026"
-    */
     const fecha_partido = partido.local_date
       ? partido.local_date.split(' ')[0]
       : ''
@@ -113,11 +131,19 @@ function insertarBloque() {
     if (fecha_partido && fecha_partido !== fecha_actual_separador) {
       fecha_actual_separador = fecha_partido
       const separador = crearSeparadorFecha(fecha_partido)
-      contenedor_timeline.insertBefore(separador, centinela)
+      if (centinela_valido) {
+        contenedor_timeline.insertBefore(separador, centinela)
+      } else {
+        contenedor_timeline.appendChild(separador)
+      }
     }
 
     const item = crearItemTimeline(partido)
-    contenedor_timeline.insertBefore(item, centinela)
+    if (centinela_valido) {
+      contenedor_timeline.insertBefore(item, centinela)
+    } else {
+      contenedor_timeline.appendChild(item)
+    }
   })
 
   partidos_insertados += siguiente_bloque.length
@@ -218,8 +244,14 @@ function limpiarTimeline() {
   fecha_actual_separador = ''
 
   if (contenedor_timeline) {
-    contenedor_timeline.innerHTML = ''
-    if (centinela) contenedor_timeline.appendChild(centinela)
+    /*
+      Eliminamos todos los hijos EXCEPTO el centinela.
+      No usamos innerHTML = '' porque destruiría la referencia
+      al centinela que el IntersectionObserver necesita.
+    */
+    Array.from(contenedor_timeline.children).forEach(hijo => {
+      if (hijo !== centinela) hijo.remove()
+    })
   }
 
   if (indicador_fin) indicador_fin.setAttribute('hidden', '')

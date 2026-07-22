@@ -14,9 +14,8 @@
   z-index: 1100 — por encima del navbar (z-index: 1000).
 */
 
-[hidden] {
-  display: none !important;
-}
+
+[hidden] { display: none !important; }
 
 
 .modal_overlay {
