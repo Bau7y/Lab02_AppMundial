@@ -1,11 +1,4 @@
-/* ============================================================
-   components.js — Mundial 2026
-   Web Components nativos: <nav-bar> y <site-footer>
-   Mismo patrón del lab anterior adaptado al lab02.
-   Estándar W3C — sin librerías externas.
-   ============================================================ */
-
-/* ── 1. Navbar Component ────────────────────────────────── */
+/* Navbar Component */
 
 class NavBar extends HTMLElement {
 
@@ -19,7 +12,7 @@ class NavBar extends HTMLElement {
             Mundial <span>2026</span>
           </a>
 
-          <!-- Links desktop — Flexbox -->
+          <!-- Links desktop - Flexbox -->
           <ul class="navbar_links" role="list">
             <li><a href="/pages/tour-sedes.html">Tour de Sedes</a></li>
             <li><a href="/pages/agenda-simultanea.html">Agenda</a></li>
@@ -126,7 +119,7 @@ class NavBar extends HTMLElement {
   }
 }
 
-/* ── 2. Footer Component ────────────────────────────────── */
+/* Footer Component */
 
 class SiteFooter extends HTMLElement {
 
@@ -193,7 +186,7 @@ class SiteFooter extends HTMLElement {
   }
 }
 
-/* ── 3. Registro de componentes ─────────────────────────── */
+/* Registro de componentes */
 
 customElements.define('nav-bar', NavBar)
 customElements.define('site-footer', SiteFooter)

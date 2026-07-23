@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Mundial 2026 — Aplicación interactiva. ISW-521 Laboratorio #2, UTN San Carlos.">
-  <title>Mundial 2026 — ISW-521</title>
+  <title>Mundial 2026</title>
 
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/components.css">
@@ -20,11 +20,11 @@
       <div class="container">
 
         <header class="section_header">
-          <span class="section_badge">ISW-521 — Laboratorio #2</span>
+          <span class="section_badge">Laboratorio #2</span>
           <h1 id="inicio-titulo">Mundial 2026</h1>
           <p>
             Aplicación interactiva con datos en tiempo real del
-            Mundial FIFA 2026. Seleccioná una vista para explorar
+            Mundial FIFA 2026. Selecciona una vista para explorar
             sedes, agenda, timeline, tu equipo favorito o la
             matriz de enfrentamientos.
           </p>
@@ -39,7 +39,7 @@
                 <span class="vista_icono" aria-hidden="true">🏟️</span>
                 <div class="vista_info">
                   <h2 class="vista_titulo">Tour de Sedes</h2>
-                  <p class="vista_desc">Explorá las 16 sedes y sus partidos con navegación por scroll suave.</p>
+                  <p class="vista_desc">Explora las 16 sedes y sus partidos con navegación por scroll suave.</p>
                 </div>
                 <span class="vista_flecha" aria-hidden="true">→</span>
               </a>
@@ -72,7 +72,7 @@
                 <span class="vista_icono" aria-hidden="true">⭐</span>
                 <div class="vista_info">
                   <h2 class="vista_titulo">Dashboard del Fanático</h2>
-                  <p class="vista_desc">Elegí tu equipo favorito y el dashboard se adapta a sus colores.</p>
+                  <p class="vista_desc">Elige tu equipo favorito y el dashboard se adapta a sus colores.</p>
                 </div>
                 <span class="vista_flecha" aria-hidden="true">→</span>
               </a>
@@ -97,78 +97,6 @@
   </main>
 
   <site-footer></site-footer>
-
-  <style>
-    .vistas_grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: var(--spacing_sm);
-      margin-top: var(--spacing_lg);
-    }
-
-    .vista_card {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing_md);
-      padding: var(--spacing_md);
-      background: var(--color_bg_card);
-      border: 1.5px solid var(--color_border);
-      border-radius: var(--radius_md);
-      transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
-    }
-
-    .vista_card:hover {
-      border-color: var(--color_primary);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow_md);
-    }
-
-    .vista_icono {
-      font-size: 2rem;
-      flex-shrink: 0;
-    }
-
-    .vista_info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .vista_titulo {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--color_text);
-      margin-bottom: 0.2rem;
-    }
-
-    .vista_desc {
-      font-size: 0.85rem;
-      color: var(--color_text_muted);
-      line-height: 1.5;
-    }
-
-    .vista_flecha {
-      font-size: 1.2rem;
-      color: var(--color_primary);
-      flex-shrink: 0;
-      transition: transform var(--transition);
-    }
-
-    .vista_card:hover .vista_flecha {
-      transform: translateX(4px);
-    }
-
-    @media (min-width: 768px) {
-      .vistas_grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .vistas_grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-  </style>
 
 </body>
 </html>

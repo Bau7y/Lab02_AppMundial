@@ -1,22 +1,4 @@
-/* ============================================================
-   components.css — Mundial 2026
-   Estilos de piezas reutilizables generadas por ui.js:
-   modal de sesión, countdown, banner de caché, skeletons,
-   mensajes de error y estado vacío.
-   Se carga en TODAS las páginas junto con styles.css.
-   ============================================================ */
-
-/* ── 1. Overlay del modal ───────────────────────────────── */
-
-/*
-  El overlay cubre toda la pantalla detrás del modal.
-  position: fixed lo fija al viewport, no al documento.
-  z-index: 1100 — por encima del navbar (z-index: 1000).
-*/
-
-
 [hidden] { display: none !important; }
-
 
 .modal_overlay {
   position: fixed;
@@ -26,7 +8,7 @@
   backdrop-filter: blur(4px);
 }
 
-/* ── 2. Modal de sesión expirada (401) ──────────────────── */
+/* Modal de sesión expirada (401) */
 
 .modal_sesion {
   position: fixed;
@@ -44,13 +26,6 @@
   flex-direction: column;
   gap: var(--spacing_sm);
 }
-
-/*
-  min() elige el valor más pequeño entre 480px y 90vw.
-  En móvil (menos de 533px) el modal usa el 90% del ancho.
-  En desktop usa 480px fijos. Evita overflow horizontal
-  sin necesitar media queries.
-*/
 
 .modal_sesion_icono {
   font-size: 2.5rem;
@@ -74,13 +49,8 @@
   margin-top: var(--spacing_xs);
 }
 
-/* ── 3. Banner de countdown (429) ───────────────────────── */
+/* Banner de countdown (429) */
 
-/*
-  El banner se fija en la parte superior de la página,
-  debajo del navbar, para no interferir con el contenido.
-  calc() suma la altura del navbar al top para no taparlo.
-*/
 .banner_countdown {
   position: fixed;
   top: calc(var(--navbar_h) + 8px);
@@ -111,7 +81,7 @@
   white-space: nowrap;
 }
 
-/* ── 4. Banner de datos no actualizados (caché) ─────────── */
+/* Banner de datos no actualizados (caché) */
 
 .banner_cache {
   background: var(--color_warning_bg);
@@ -136,13 +106,7 @@
   margin: 0;
 }
 
-/* ── 5. Skeletons de carga ──────────────────────────────── */
-
-/*
-  Los skeletons usan una animación de pulso para indicar
-  que hay contenido cargando. El gradiente animado simula
-  un brillo que se desplaza de izquierda a derecha.
-*/
+/* Skeletons de carga */
 
 @keyframes skeleton_pulse {
   0%   { background-position: -200% 0; }
@@ -161,27 +125,27 @@
   border-radius: var(--radius_md);
 }
 
-/* Variante tipo card — para grids de sedes y partidos */
+/* Variante tipo card - para grids de sedes y partidos */
 .skeleton_card {
   height: 180px;
   width: 100%;
 }
 
-/* Variante tipo fila — para listas y agenda */
+/* Variante tipo fila - para listas y agenda */
 .skeleton_fila {
   height: 64px;
   width: 100%;
   border-radius: var(--radius_sm);
 }
 
-/* Variante tipo celda — para la matriz de enfrentamientos */
+/* Variante tipo celda - para la matriz de enfrentamientos */
 .skeleton_celda {
   height: 48px;
   width: 100%;
   border-radius: var(--radius_sm);
 }
 
-/* ── 6. Estado de error ─────────────────────────────────── */
+/* Estado de error */
 
 .estado_error {
   display: flex;
@@ -215,7 +179,7 @@
   background: var(--color_error_bg);
 }
 
-/* ── 7. Estado vacío ────────────────────────────────────── */
+/* Estado vacío */
 
 .estado_vacio {
   display: flex;
@@ -236,7 +200,7 @@
   color: var(--color_text_muted);
 }
 
-/* ── 8. Cards genéricas ─────────────────────────────────── */
+/* Cards genéricas */
 
 /*
   Estilo de card base reutilizable en varias vistas.
@@ -268,7 +232,7 @@
   color: var(--color_text_muted);
 }
 
-/* ── 9. Badge de estado ─────────────────────────────────── */
+/* Badge de estado */
 
 /*
   Badges de estado para partidos: jugado, pendiente, en vivo.
@@ -303,12 +267,8 @@
   50%       { opacity: 0.6; }
 }
 
-/* ── 10. Indicador de carga global ──────────────────────── */
+/* Indicador de carga global */
 
-/*
-  Spinner simple para estados de carga puntuales
-  dentro de botones o elementos pequeños.
-*/
 .spinner {
   width: 18px;
   height: 18px;

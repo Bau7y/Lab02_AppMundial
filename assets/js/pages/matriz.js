@@ -1,10 +1,3 @@
-/* ============================================================
-   matriz.js — Mundial 2026
-   Campos API: groups: name, teams: [{team_id, mp, w, d, l, gf, ga, pts}]
-               teams: id, name_en
-               games: home_team_id, away_team_id, finished: "TRUE"
-   ============================================================ */
-
 const contenedor_tabs   = document.getElementById('grupos_tabs')
 const contenedor_matriz = document.getElementById('contenedor_matriz')
 
@@ -92,7 +85,7 @@ function renderizarTabs(grupos) {
     tab.className = 'grupo_tab'
     tab.textContent = `Grupo ${grupo.name ?? grupo._id}`
     tab.setAttribute('aria-label', `Ver matriz del Grupo ${grupo.name}`)
-    tab.dataset.id = grupo._id  /* usamos _id como identificador único */
+    tab.dataset.id = grupo._id 
 
     tab.addEventListener('click', () => seleccionarGrupo(grupo))
     contenedor_tabs.appendChild(tab)
@@ -137,10 +130,6 @@ function construirMapaResultados() {
 function renderizarMatriz(grupo) {
   if (!contenedor_matriz) return
 
-  /*
-    grupos.teams tiene objetos {team_id, mp, w, ...}
-    Extraemos los team_ids para cruzar con equipos_por_id
-  */
   const ids_equipos = obtenerIdsEquiposDelGrupo(grupo)
 
   if (ids_equipos.length === 0) {
@@ -290,10 +279,6 @@ function actualizarCeldasConResultados() {
   contenedor_matriz.querySelector('.banner_cache')?.remove()
 }
 
-/*
-  Los grupos tienen teams: [{team_id, ...}]
-  Extraemos team_id de cada objeto
-*/
 function obtenerIdsEquiposDelGrupo(grupo) {
   if (Array.isArray(grupo.teams)) {
     return grupo.teams.map(t => (typeof t === 'object' ? t.team_id : t))

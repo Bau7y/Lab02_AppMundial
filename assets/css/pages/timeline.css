@@ -1,12 +1,4 @@
-/* ============================================================
-   timeline.css — Mundial 2026
-   Estilos exclusivos de timeline-infinito.html.
-   Objetivo técnico: IntersectionObserver para carga
-   progresiva de bloques de 10 partidos.
-   Mobile-first.
-   ============================================================ */
-
-/* ── 1. Contenedor principal del timeline ───────────────── */
+/* Contenedor principal del timeline */
 
 .timeline_container {
   display: flex;
@@ -15,11 +7,6 @@
   position: relative;
 }
 
-/*
-  La línea vertical del timeline se dibuja con ::before
-  en el contenedor. Corre de arriba a abajo por el centro
-  izquierdo de cada card.
-*/
 .timeline_container::before {
   content: '';
   position: absolute;
@@ -36,7 +23,7 @@
   );
 }
 
-/* ── 2. Item del timeline ───────────────────────────────── */
+/* Item del timeline */
 
 .timeline_item {
   display: flex;
@@ -45,11 +32,6 @@
   position: relative;
 }
 
-/*
-  El punto del timeline: círculo sobre la línea vertical.
-  position: absolute relativo al .timeline_item.
-  left: 12px lo centra sobre la línea de 2px en left:20px.
-*/
 .timeline_punto {
   position: absolute;
   left: 12px;
@@ -75,7 +57,7 @@
   flex: 1;
 }
 
-/* ── 3. Card de partido en el timeline ──────────────────── */
+/* Card de partido en el timeline */
 
 .timeline_card {
   background: var(--color_bg_card);
@@ -149,12 +131,8 @@
   color: var(--color_text_muted);
 }
 
-/* ── 4. Separador de fecha ──────────────────────────────── */
+/* Separador de fecha */
 
-/*
-  Cuando cambia el día en el timeline, se inserta
-  un separador con la fecha para orientar al usuario.
-*/
 .timeline_separador {
   display: flex;
   align-items: center;
@@ -178,19 +156,14 @@
   background: var(--color_border);
 }
 
-/* ── 5. Centinela del IntersectionObserver ──────────────── */
+/* Centinela del IntersectionObserver */
 
-/*
-  Elemento invisible al final de la lista.
-  El IntersectionObserver lo observa y cuando entra
-  al viewport dispara la carga del siguiente bloque.
-*/
 .timeline_centinela {
   height: 40px;
   width: 100%;
 }
 
-/* ── 6. Indicador de carga de más partidos ──────────────── */
+/* Indicador de carga de más partidos */
 
 .timeline_cargando_mas {
   display: flex;
@@ -203,7 +176,7 @@
   margin-left: 44px;
 }
 
-/* ── 7. Estado: todos los partidos cargados ─────────────── */
+/* Estado: todos los partidos cargados */
 
 .timeline_fin {
   text-align: center;
@@ -213,10 +186,8 @@
   font-size: 0.875rem;
   border-top: 1px solid var(--color_border);
 }
-
-/* ── 8. Estado de error con reintento ───────────────────── */
-
 /*
+  Estado de error con reintento 
   Si la petición inicial falla, el observer no puede
   quedar esperando. Se muestra error con botón de reintento
   que dispara el backoff exponencial desde api.js.
@@ -230,7 +201,7 @@
   text-align: center;
 }
 
-/* ── 9. Breakpoints ─────────────────────────────────────── */
+/* Breakpoints */
 
 /* Tablet: 768px */
 @media (min-width: 768px) {

@@ -1,10 +1,3 @@
-/* ============================================================
-   tour-sedes.js — Mundial 2026
-   Campos API: name_en, city_en, country_en (stadiums)
-               home_team_name_en, away_team_name_en,
-               finished: "TRUE", local_date: "06/11/2026 13:00"
-   ============================================================ */
-
 const contenedor_sedes    = document.getElementById('contenedor_sedes')
 const contenedor_partidos = document.getElementById('contenedor_partidos')
 const titulo_sede_activa  = document.getElementById('titulo_sede_activa')
@@ -78,7 +71,7 @@ function renderizarSedes(sedes) {
       <span class="sede_btn_icono" aria-hidden="true">🏟️</span>
       <span class="sede_btn_info">
         <span class="sede_btn_nombre">${sede.name_en}</span>
-        <span class="sede_btn_pais">${sede.city_en} — ${sede.country_en}</span>
+        <span class="sede_btn_pais">${sede.city_en} / ${sede.country_en}</span>
       </span>
       ${cantidad > 0
         ? `<span class="sede_btn_contador" aria-label="${cantidad} partidos">${cantidad}</span>`
@@ -122,7 +115,7 @@ function renderizarPartidosDeSede(sede) {
   if (datos_partidos.length === 0) {
     contenedor_partidos.innerHTML = `
       <div class="partidos_error_local" role="alert">
-        <span aria-hidden="true">⚠️</span>
+        <span aria-hidden="true">!</span>
         <p>No se pudieron cargar los partidos de esta sede.</p>
       </div>
     `
@@ -162,9 +155,9 @@ function renderizarPartidosDeSede(sede) {
         </div>
       </div>
       <div class="partido_meta">
-        <span class="partido_meta_item">📅 ${partido.local_date ?? 'Fecha TBD'}</span>
+        <span class="partido_meta_item">${partido.local_date ?? 'Fecha TBD'}</span>
         ${partido.group
-          ? `<span class="partido_meta_item">🏆 Grupo ${partido.group}</span>`
+          ? `<span class="partido_meta_item">Grupo ${partido.group}</span>`
           : ''}
         <span class="badge ${jugado ? 'badge_jugado' : 'badge_pendiente'}">
           ${jugado ? 'Jugado' : 'Pendiente'}
@@ -180,7 +173,7 @@ function mostrarPlaceholderPartidos() {
   contenedor_partidos.innerHTML = `
     <div class="partidos_placeholder" role="status" aria-live="polite">
       <span class="partidos_placeholder_icono" aria-hidden="true">🏟️</span>
-      <p>Seleccioná una sede para ver sus partidos.</p>
+      <p>Selecciona una sede para ver sus partidos.</p>
     </div>
   `
 }

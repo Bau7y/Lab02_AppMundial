@@ -1,18 +1,5 @@
-/* ============================================================
-   tour-sedes.css — Mundial 2026
-   Estilos exclusivos de tour-sedes.html.
-   Objetivo técnico: scrollIntoView + estado activo de sede.
-   Mobile-first.
-   ============================================================ */
+/* Layout principal */
 
-/* ── 1. Layout principal ────────────────────────────────── */
-
-/*
-  Layout de dos columnas en desktop:
-  - Columna izquierda: lista de sedes (fija con sticky)
-  - Columna derecha: partidos de la sede seleccionada
-  En móvil se apila en columna única.
-*/
 .tour_layout {
   display: grid;
   grid-template-columns: 1fr;
@@ -20,7 +7,7 @@
   align-items: start;
 }
 
-/* ── 2. Panel de sedes ──────────────────────────────────── */
+/* Panel de sedes */
 
 .sedes_panel {
   display: flex;
@@ -37,12 +24,12 @@
   margin-bottom: var(--spacing_xs);
 }
 
-/* ── 3. Botón de sede ───────────────────────────────────── */
+/* Botón de sede */
 
 /*
   Cada sede es un botón que al hacer click:
-  1. Se marca como activo visualmente
-  2. Ejecuta scrollIntoView hacia la sección de partidos
+  1- Se marca como activo visualmente
+  2- Ejecuta scrollIntoView hacia la sección de partidos
   Flexbox alinea el icono de bandera con el nombre y país.
 */
 .sede_btn {
@@ -65,11 +52,6 @@
   background: var(--color_primary_bg);
 }
 
-/*
-  Estado activo: la sede seleccionada tiene borde y fondo
-  del color primario para feedback visual inmediato al click.
-  aria-pressed="true" se añade por JS para accesibilidad.
-*/
 .sede_btn.activa {
   border-color: var(--color_primary);
   background: var(--color_primary_bg);
@@ -114,7 +96,7 @@
   flex-shrink: 0;
 }
 
-/* ── 4. Panel de partidos ───────────────────────────────── */
+/* Panel de partidos */
 
 .partidos_panel {
   display: flex;
@@ -122,11 +104,6 @@
   gap: var(--spacing_sm);
 }
 
-/*
-  scroll-margin-top compensa el navbar fijo al usar
-  scrollIntoView. Sin esto, el título de la sección
-  quedaría parcialmente oculto detrás del navbar.
-*/
 .partidos_panel_titulo {
   font-size: 1.2rem;
   color: var(--color_text);
@@ -139,7 +116,7 @@
   margin-top: 0.25rem;
 }
 
-/* ── 5. Card de partido ─────────────────────────────────── */
+/* Card de partido */
 
 .partido_card {
   background: var(--color_bg_card);
@@ -219,7 +196,7 @@
   gap: 0.25rem;
 }
 
-/* ── 6. Estado: sede sin partidos ───────────────────────── */
+/* sede sin partidos */
 
 /*
   Si /get/games falla pero /get/stadiums funcionó,
@@ -244,7 +221,7 @@
   font-weight: 500;
 }
 
-/* ── 7. Estado inicial (sin sede seleccionada) ──────────── */
+/* Estado inicial (sin sede seleccionada) */
 
 .partidos_placeholder {
   display: flex;
@@ -269,7 +246,7 @@
   max-width: 280px;
 }
 
-/* ── 8. Breakpoints ─────────────────────────────────────── */
+/* Breakpoints */
 
 /* Tablet: 768px */
 @media (min-width: 768px) {
@@ -287,12 +264,7 @@
 
 /* Desktop: 1024px */
 @media (min-width: 1024px) {
-  /*
-    En desktop: lista de sedes a la izquierda (fija con sticky),
-    partidos a la derecha.
-    280px para el panel de sedes — ancho fijo que permite
-    leer los nombres sin truncarlos en la mayoría de casos.
-  */
+
   .tour_layout {
     grid-template-columns: 280px 1fr;
   }

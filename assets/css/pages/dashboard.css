@@ -1,18 +1,12 @@
-/* ============================================================
-   dashboard.css — Mundial 2026
-   Mobile-first
-   ============================================================ */
-
-/* Fix global para hidden */
+/* Fix global para hidden (flex) */
 [hidden] { display: none !important; }
 
-/* ── Variables de tema del equipo ── */
 :root {
   --team_color_primary:   var(--color_primary);
   --team_color_secondary: var(--color_primary_bg);
 }
 
-/* ── Selector de equipo ── */
+/* Selector de equipo */
 .selector_equipo_wrap {
   display: flex;
   flex-direction: column;
@@ -48,7 +42,7 @@
   box-shadow: 0 0 0 3px rgba(2,185,6,0.15);
 }
 
-/* ── Layout dashboard ── */
+/* Layout dashboard */
 .dashboard_layout {
   display: flex;
   flex-direction: column;
@@ -61,7 +55,7 @@
   gap: var(--spacing_md);
 }
 
-/* ── Header del equipo ── */
+/* Header del equipo */
 .dashboard_header {
   background: var(--team_color_secondary);
   border: 1px solid var(--color_border);
@@ -90,7 +84,7 @@
   margin-top: 0.25rem;
 }
 
-/* ── Grid de stats ── */
+/* Grid de stats */
 .dashboard_stats_grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -130,7 +124,7 @@
   color: var(--color_text_muted);
 }
 
-/* ── Posición en el grupo ── */
+/* Posición en el grupo */
 .posicion_grupo_wrap {
   background: var(--color_bg_card);
   border: 1px solid var(--color_border);
@@ -206,7 +200,7 @@
 .posicion_num.primero { background: var(--color_accent); color: #000; }
 .posicion_num.segundo { background: var(--color_border); color: var(--color_text); }
 
-/* ── Partidos del equipo ── */
+/* Partidos del equipo */
 .partidos_equipo_titulo {
   font-size: 0.8rem;
   font-weight: 600;
@@ -261,7 +255,7 @@
   white-space: nowrap;
 }
 
-/* ── Placeholder inicial ── */
+/* Placeholder inicial */
 .dashboard_placeholder {
   display: flex;
   flex-direction: column;
@@ -279,7 +273,7 @@
   opacity: 0.4;
 }
 
-/* ── Breakpoints ── */
+/* Breakpoints */
 @media (min-width: 768px) {
   .dashboard_stats_grid { grid-template-columns: repeat(4, 1fr); }
 }

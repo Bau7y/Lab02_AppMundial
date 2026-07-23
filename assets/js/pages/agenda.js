@@ -1,10 +1,3 @@
-/* ============================================================
-   agenda.js — Mundial 2026
-   Campos API: home_team_name_en, away_team_name_en,
-               finished: "TRUE", local_date: "06/11/2026 13:00"
-               teams: id, name_en
-   ============================================================ */
-
 const contenedor_agenda   = document.getElementById('contenedor_agenda')
 const btn_fecha_anterior  = document.getElementById('btn_fecha_anterior')
 const btn_fecha_siguiente = document.getElementById('btn_fecha_siguiente')
@@ -68,8 +61,8 @@ function procesarPartidos(partidos) {
 
   partidos.forEach(partido => {
     /*
-      local_date viene como "06/11/2026 13:00"
-      Extraemos la parte de la fecha con split(' ')[0] → "06/11/2026"
+      de "06/11/2026 13:00"
+      a usar .split(' ')[0] para dar como resultado "06/11/2026"
     */
     const fecha = partido.local_date
       ? partido.local_date.split(' ')[0]
@@ -85,9 +78,7 @@ function procesarPartidos(partidos) {
     .filter(([, lista]) => lista.length >= 2)
     .map(([fecha]) => fecha)
     .sort((a, b) => {
-      /*
-        Formato MM/DD/YYYY — convertimos a Date para ordenar correctamente
-      */
+
       return new Date(a) - new Date(b)
     })
 
@@ -161,9 +152,6 @@ function crearColumnaPartido(partido) {
   const nombre_local    = partido.home_team_name_en ?? 'Por definir'
   const nombre_visitante = partido.away_team_name_en ?? 'Por definir'
 
-  /*
-    local_date: "06/11/2026 13:00" — extraemos la hora con split(' ')[1]
-  */
   const hora = partido.local_date
     ? partido.local_date.split(' ')[1]
     : 'TBD'
@@ -193,7 +181,7 @@ function crearColumnaPartido(partido) {
 
       <div class="agenda_partido_footer">
         <span class="agenda_partido_sede">
-          ${partido.group ? `🏆 Grupo ${partido.group}` : ''}
+          ${partido.group ? `* Grupo ${partido.group}` : ''}
         </span>
         <span class="badge badge_pendiente">${partido.type ?? ''}</span>
       </div>
@@ -206,9 +194,6 @@ function crearColumnaPartido(partido) {
 function formatearFecha(fechaStr) {
   if (!fechaStr || fechaStr === 'sin_fecha') return 'Fecha por confirmar'
   try {
-    /*
-      Formato MM/DD/YYYY — new Date() lo parsea correctamente en este formato
-    */
     const fecha = new Date(fechaStr)
     return new Intl.DateTimeFormat('es-CR', {
       weekday: 'long',

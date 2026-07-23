@@ -1,9 +1,3 @@
-/* ============================================================
-   timeline.js — Mundial 2026
-   Campos API: home_team_name_en, away_team_name_en,
-               finished: "TRUE", local_date: "06/11/2026 13:00"
-   ============================================================ */
-
 const contenedor_timeline = document.getElementById('contenedor_timeline')
 let   centinela           = document.getElementById('timeline_centinela')
 const indicador_cargando  = document.getElementById('timeline_cargando_mas')
@@ -37,10 +31,6 @@ async function iniciarVista() {
   try {
     const resultado = await obtenerPartidos()
 
-    /*
-      local_date: "06/11/2026 13:00" — formato MM/DD/YYYY HH:MM
-      new Date() lo parsea correctamente para ordenar cronológicamente
-    */
     todos_los_partidos = resultado.datos
       .filter(p => p.local_date)
       .sort((a, b) => new Date(a.local_date) - new Date(b.local_date))
@@ -55,7 +45,6 @@ async function iniciarVista() {
     partidos_insertados    = 0
     fecha_actual_separador = ''
 
-    // Si el centinela no existe, crearlo
     if (!centinela) {
       centinela = document.createElement('div')
       centinela.id = 'timeline_centinela'
@@ -78,7 +67,6 @@ async function iniciarVista() {
     }
 
   } catch (error) {
-    console.error('ERROR EN TIMELINE:', error.message, error.stack) 
     ocultarSkeletons(contenedor_timeline)
     mostrarError(contenedor_timeline, 'No se pudo cargar el timeline.', '/get/games')
   }
@@ -171,7 +159,7 @@ function crearItemTimeline(partido) {
   const nombre_local    = partido.home_team_name_en ?? 'Por definir'
   const nombre_visitante = partido.away_team_name_en ?? 'Por definir'
 
-  /* Hora: "06/11/2026 13:00" → "13:00" */
+  /* Hora: "06/11/2026 13:00" - "13:00" */
   const hora = partido.local_date
     ? partido.local_date.split(' ')[1]
     : 'TBD'
@@ -198,7 +186,7 @@ function crearItemTimeline(partido) {
         </div>
 
         <div class="timeline_meta">
-          <span class="timeline_meta_item">🕐 ${hora}</span>
+          <span class="timeline_meta_item">- ${hora}</span>
           ${partido.group
             ? `<span class="timeline_meta_item badge badge_pendiente">Grupo ${partido.group}</span>`
             : ''}
@@ -229,7 +217,7 @@ function mostrarFinDelTimeline() {
   if (indicador_cargando) indicador_cargando.setAttribute('hidden', '')
   if (indicador_fin) {
     indicador_fin.removeAttribute('hidden')
-    indicador_fin.textContent = `✓ ${todos_los_partidos.length} partidos cargados`
+    indicador_fin.textContent = `- ${todos_los_partidos.length} partidos cargados`
   }
 }
 
@@ -244,11 +232,6 @@ function limpiarTimeline() {
   fecha_actual_separador = ''
 
   if (contenedor_timeline) {
-    /*
-      Eliminamos todos los hijos EXCEPTO el centinela.
-      No usamos innerHTML = '' porque destruiría la referencia
-      al centinela que el IntersectionObserver necesita.
-    */
     Array.from(contenedor_timeline.children).forEach(hijo => {
       if (hijo !== centinela) hijo.remove()
     })

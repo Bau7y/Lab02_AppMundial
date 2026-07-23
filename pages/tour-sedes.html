@@ -16,7 +16,7 @@
   <!-- Elementos globales requeridos por ui.js -->
   <div id="modal_overlay" class="modal_overlay" hidden></div>
   <div id="modal_sesion" class="modal_sesion" hidden role="dialog" aria-modal="false" aria-labelledby="modal_sesion_titulo">
-    <span class="modal_sesion_icono" aria-hidden="true">🔒</span>
+    <span class="modal_sesion_icono" aria-hidden="true">*</span>
     <h2 id="modal_sesion_titulo">Sesión expirada</h2>
     <p>Tu sesión ha expirado. Volvé a conectarte para continuar.</p>
     <div class="modal_sesion_acciones">
@@ -27,12 +27,12 @@
   </div>
 
   <div id="banner_cache" class="banner_cache" hidden role="status" aria-live="polite">
-    <span class="banner_cache_icono" aria-hidden="true">⚠️</span>
+    <span class="banner_cache_icono" aria-hidden="true">!</span>
     <p>Mostrando datos no actualizados (sin conexión)</p>
   </div>
 
   <div id="banner_countdown" class="banner_countdown" hidden role="status" aria-live="polite">
-    <span class="banner_countdown_icono" aria-hidden="true">⏳</span>
+    <span class="banner_countdown_icono" aria-hidden="true">*</span>
     <span id="texto_countdown" class="texto_countdown"></span>
   </div>
 
@@ -45,7 +45,7 @@
         <header class="section_header">
           <span class="section_badge">Tour Virtual</span>
           <h1 id="tour-titulo">Sedes del Mundial 2026</h1>
-          <p>Seleccioná una sede para ver sus partidos. La página se desplazará automáticamente.</p>
+          <p>Selecciona una sede para ver sus partidos. La página se desplazará automáticamente.</p>
         </header>
 
         <div class="tour_layout">
@@ -61,7 +61,7 @@
               Partidos
             </h2>
             <p class="partidos_panel_subtitulo">
-              Seleccioná una sede del panel izquierdo para ver sus partidos.
+              Selecciona una sede del panel izquierdo para ver sus partidos.
             </p>
             <div id="contenedor_partidos" aria-live="polite" aria-label="Partidos de la sede seleccionada">
               <!-- Renderizado por tour-sedes.js -->

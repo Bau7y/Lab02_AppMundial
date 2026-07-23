@@ -1,14 +1,7 @@
-/* ============================================================
-   styles.css — Mundial 2026
-   Sistema de diseño global: variables, reset, tipografía,
-   navbar, footer, botones, utilidades.
-   Se carga en TODAS las páginas. Mobile-first.
-   ============================================================ */
-
-/* ── 1. Fuentes ─────────────────────────────────────────── */
+/* Fuentes */
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@600;700&display=swap');
 
-/* ── 2. Variables CSS ───────────────────────────────────── */
+/* Variables CSS */
 :root {
   /* Colores principales */
   --color_primary:      #02B906;
@@ -66,7 +59,7 @@
   --navbar_h: 64px;
 }
 
-/* ── 3. Reset ───────────────────────────────────────────── */
+/* Reset */
 *,
 *::before,
 *::after {
@@ -113,7 +106,7 @@ button {
   scroll-margin-top: calc(var(--navbar_h) + var(--spacing_sm));
 }
 
-/* ── 4. Tipografía ──────────────────────────────────────── */
+/* Tipografía */
 h1, h2, h3, h4 {
   font-family: var(--font_display);
   line-height: 1.2;
@@ -131,7 +124,7 @@ p {
   line-height: 1.75;
 }
 
-/* ── 5. Contenedor ──────────────────────────────────────── */
+/* Contenedor */
 .container {
   width: 100%;
   max-width: var(--container_max);
@@ -139,7 +132,7 @@ p {
   padding-inline: var(--container_px);
 }
 
-/* ── 6. Navbar ──────────────────────────────────────────── */
+/* Navbar */
 .navbar {
   position: fixed;
   top: 0;
@@ -270,7 +263,7 @@ p {
   color: var(--color_primary);
 }
 
-/* ── 7. Footer ──────────────────────────────────────────── */
+/* Footer */
 .footer {
   background: var(--color_bg_secondary);
   border-top: 1px solid var(--color_border);
@@ -331,7 +324,7 @@ p {
   color: var(--color_text_muted);
 }
 
-/* ── 8. Botones globales ────────────────────────────────── */
+/* Botones globales */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -379,7 +372,7 @@ p {
   background: var(--color_accent_dark);
 }
 
-/* ── 9. Secciones ───────────────────────────────────────── */
+/* Secciones */
 .section {
   padding: var(--spacing_xl) 0;
 }
@@ -405,7 +398,78 @@ p {
   margin-bottom: var(--spacing_xs);
 }
 
-/* ── 10. Accesibilidad ──────────────────────────────────── */
+/* Index */
+.vistas_grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing_sm);
+  margin-top: var(--spacing_lg);
+}
+
+.vista_card {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing_md);
+  padding: var(--spacing_md);
+  background: var(--color_bg_card);
+  border: 1.5px solid var(--color_border);
+  border-radius: var(--radius_md);
+  transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+
+.vista_card:hover {
+  border-color: var(--color_primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow_md);
+}
+
+.vista_icono {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.vista_info {
+  flex: 1;
+  min-width: 0;
+}
+
+.vista_titulo {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color_text);
+  margin-bottom: 0.2rem;
+}
+
+.vista_desc {
+  font-size: 0.85rem;
+  color: var(--color_text_muted);
+  line-height: 1.5;
+}
+
+.vista_flecha {
+  font-size: 1.2rem;
+  color: var(--color_primary);
+  flex-shrink: 0;
+  transition: transform var(--transition);
+}
+
+.vista_card:hover .vista_flecha {
+  transform: translateX(4px);
+}
+
+@media (min-width: 768px) {
+  .vistas_grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .vistas_grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Accesibilidad */
 :focus-visible {
   outline: 2px solid var(--color_primary);
   outline-offset: 3px;
@@ -420,7 +484,7 @@ p {
   }
 }
 
-/* ── 11. Breakpoints ────────────────────────────────────── */
+/* Breakpoints */
 
 /* Tablet: 768px */
 @media (min-width: 768px) {

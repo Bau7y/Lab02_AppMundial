@@ -1,12 +1,4 @@
-/* ============================================================
-   matriz.css — Mundial 2026
-   Estilos exclusivos de matriz-enfrentamientos.html.
-   Objetivo técnico: cuadrícula interactiva 4x4 por grupo,
-   cruzando tres recursos distintos.
-   Mobile-first.
-   ============================================================ */
-
-/* ── 1. Selector de grupo ───────────────────────────────── */
+/* Selector de grupo */
 
 .selector_grupo_wrap {
   display: flex;
@@ -23,7 +15,7 @@
   color: var(--color_text_muted);
 }
 
-/* Tabs de grupos — Flexbox con scroll horizontal en móvil */
+/* Tabs de grupos */
 .grupos_tabs {
   display: flex;
   gap: var(--spacing_xs);
@@ -62,7 +54,7 @@
   color: #fff;
 }
 
-/* ── 2. Contenedor de la matriz ─────────────────────────── */
+/* Contenedor de la matriz */
 
 .matriz_wrap {
   overflow-x: auto;
@@ -70,7 +62,7 @@
   border: 1px solid var(--color_border);
 }
 
-/* ── 3. Tabla de la matriz 4x4 ──────────────────────────── */
+/* Tabla de la matriz 4x4 */
 
 /*
   La matriz es una tabla HTML semántica.
@@ -84,7 +76,7 @@
   min-width: 420px;
 }
 
-/* ── 4. Encabezados de fila y columna ───────────────────── */
+/* Encabezados de fila y columna */
 
 .matriz_th_vacio {
   width: 120px;
@@ -120,7 +112,7 @@
   min-width: 120px;
 }
 
-/* ── 5. Celdas de la matriz ─────────────────────────────── */
+/* Celdas de la matriz */
 
 .matriz_td {
   text-align: center;
@@ -133,10 +125,7 @@
   transition: background var(--transition);
 }
 
-/*
-  La diagonal: equipo contra sí mismo.
-  Visualmente deshabilitada con un patrón de rayas.
-*/
+/* equipo contra sí mismo */
 .matriz_td.diagonal {
   background: repeating-linear-gradient(
     45deg,
@@ -166,7 +155,7 @@
   background: var(--color_bg_secondary);
 }
 
-/* ── 6. Contenido de la celda ───────────────────────────── */
+/* Contenido de la celda */
 
 .celda_resultado {
   font-family: var(--font_display);
@@ -187,7 +176,7 @@
   color: var(--color_border);
 }
 
-/* ── 7. Leyenda de la matriz ────────────────────────────── */
+/* Leyenda de la matriz */
 
 .matriz_leyenda {
   display: flex;
@@ -234,7 +223,7 @@
   );
 }
 
-/* ── 8. Estado de carga por grupo ───────────────────────── */
+/* Estado de carga por grupo */
 
 .matriz_cargando {
   display: flex;
@@ -246,7 +235,7 @@
   font-size: 0.9rem;
 }
 
-/* ── 9. Breakpoints ─────────────────────────────────────── */
+/* Breakpoints */
 
 /* Tablet: 768px */
 @media (min-width: 768px) {

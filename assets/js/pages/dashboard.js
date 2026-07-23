@@ -1,13 +1,3 @@
-/* ============================================================
-   dashboard.js — Mundial 2026
-   Campos API reales:
-   - teams: id, name_en, flag, groups (letra del grupo)
-   - groups: _id, name, teams:[{team_id,mp,w,d,l,gf,ga,pts,gd}]
-   - games: home_team_id, away_team_id, home_team_name_en,
-            away_team_name_en, finished:"TRUE",
-            home_score, away_score, local_date:"MM/DD/YYYY HH:MM"
-   ============================================================ */
-
 const selector_equipo      = document.getElementById('selector_equipo')
 const contenedor_dashboard = document.getElementById('contenedor_dashboard')
 const contenedor_partidos  = document.getElementById('contenedor_partidos_equipo')
@@ -134,7 +124,7 @@ function renderizarDashboard(equipo) {
   renderizarPartidosEquipo(partidos_equipo, equipo)
 }
 
-/* ── Tematización dinámica ── */
+/* Tematización dinámica */
 function aplicarTemaEquipo(nombre) {
   const colores = COLORES_EQUIPOS[nombre] ?? COLOR_DEFAULT
   document.documentElement.style.setProperty('--team_color_primary', colores.primary)
@@ -151,7 +141,7 @@ function hexAColor(hex, opacidad) {
   return `rgba(${r},${g},${b},${opacidad})`
 }
 
-/* ── Header del equipo ── */
+/* Header del equipo */
 function renderizarHeaderEquipo(equipo) {
   const header = document.getElementById('dashboard_header')
   if (!header) return
@@ -167,7 +157,7 @@ function renderizarHeaderEquipo(equipo) {
   `
 }
 
-/* ── Stats calculadas de los partidos ── */
+/* Stats calculadas de los partidos */
 function renderizarStatsEquipo(partidos, equipo) {
   if (!contenedor_dashboard) return
 
@@ -207,7 +197,7 @@ function renderizarStatsEquipo(partidos, equipo) {
   `
 }
 
-/* ── Posición en el grupo ── */
+/* Posición en el grupo */
 function renderizarPosicionGrupo(equipo) {
   if (!contenedor_grupo) return
 
@@ -320,7 +310,7 @@ function crearCardPartido(partido, equipo) {
   `
 }
 
-/* ── localStorage ── */
+/* localStorage */
 function guardarEquipoFavorito(equipo) {
   localStorage.setItem(KEY_EQUIPO_FAVORITO, JSON.stringify({
     id: equipo.id, name: equipo.name_en
@@ -337,7 +327,7 @@ function leerEquipoFavorito() {
   }
 }
 
-/* ── Placeholder ── */
+/* Placeholder */
 function mostrarPlaceholder() {
   if (!contenedor_dashboard) return
   contenedor_dashboard.innerHTML = `
